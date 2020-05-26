@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="main"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainController">
+   <children>
+      <HBox layoutX="-1.0" layoutY="128.0" prefHeight="400.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Pane fx:id="wedkarzTab" prefHeight="400.0" prefWidth="200.0" />
+            <Pane fx:id="sekretarzTab" prefHeight="400.0" prefWidth="200.0" />
+            <Pane fx:id="turniejTab" prefHeight="400.0" prefWidth="200.0" />
+            <Pane fx:id="ostatniTab" prefHeight="400.0" prefWidth="200.0" />
+         </children>
+      </HBox>
+   </children>
 </AnchorPane>
