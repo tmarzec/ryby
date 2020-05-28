@@ -33,7 +33,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
 
-            while(rs.next()) {
+            while (rs.next()) {
                 ret.add(rs.getString("nazwa"));
             }
         } catch (Exception e) {
