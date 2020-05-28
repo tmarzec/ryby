@@ -27,19 +27,15 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
 
     @Override
     public ArrayList<String> getFish() {
-        ArrayList<String> ret = null;
+        ArrayList<String> ret = new ArrayList<>();
         String sql = "select * from projektid.ryby";
         try {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
 
             while(rs.next()) {
-                String a = rs.getString("nazwa");
-                System.out.println(a);
+                ret.add(rs.getString("nazwa"));
             }
-
-            //ret= (ArrayList<String>) rs.getArray(1);
-            //ret=rs.getArray("nazwa");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,13 +1,14 @@
 package Start;
 
+import database.DatabaseHandler;
+import database.DatabaseHandlerImplementation;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+
+import java.util.ArrayList;
 
 public class StartMenu extends Application {
 
@@ -21,6 +22,13 @@ public class StartMenu extends Application {
         //stage.getIcons().add(new Image("file:src/main/resources/czapka.png"));
         stage.setTitle("Rybak v1");
         stage.show();
+
+        DatabaseHandler db = new DatabaseHandlerImplementation();
+        db.connect();
+        ArrayList<String> a = db.getFish();
+        for(String fish: a) {
+            System.out.println(fish);
+        }
     }
 
 
