@@ -1,5 +1,6 @@
 package View;
 
+import database.DatabaseHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -85,7 +86,7 @@ public class MenuWindow extends Stage {
 
     }
     FXMLLoader wedkarzLoader = null;
-    wedkarzController controller=null;
+    wedkarzController wedkarzController=null;
     Pane wedkarzPane;
     Stage wedkarzStage;
 
@@ -104,6 +105,9 @@ public class MenuWindow extends Stage {
     Pane turniejPane;
     Stage turniejStage;
 
+    public void setDb(DatabaseHandler dh) {
+        wedkarzController.setBase(dh);
+    }
     @FXML
     public void initialize() throws IOException {
 
@@ -111,6 +115,7 @@ public class MenuWindow extends Stage {
         wedkarzPane = wedkarzLoader.load();
         wedkarzStage=new Stage();
         wedkarzStage.setScene(new Scene(wedkarzPane));
+        wedkarzController = wedkarzLoader.getController();
 
         rynekLoader = new FXMLLoader(getClass().getClassLoader().getResource("rynek.fxml"));
         rynekPane = rynekLoader.load();
@@ -127,7 +132,7 @@ public class MenuWindow extends Stage {
         turniejStage=new Stage();
         turniejStage.setScene(new Scene(turniejPane));
 
-        wedkarzTab.setStyle("-fx-background-image: url(wedkarz.png); -fx-cursor: hand");
+        wedkarzTab.setStyle("-fx-background-image: url(rybak_mc.png); -fx-cursor: hand");
         turniejTab.setStyle("-fx-background-image: url(turniej.png); -fx-cursor: hand");
         RynekTab.setStyle("-fx-background-image: url(ryby.png); -fx-cursor: hand");
         sekretarzTab.setStyle("-fx-background-image: url(man.png); -fx-cursor: hand");

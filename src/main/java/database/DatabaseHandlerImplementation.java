@@ -1,6 +1,8 @@
 package database;
 
 
+import entities.Wedka;
+import entities.Wedkarz;
 import org.postgresql.core.Encoding;
 
 import java.beans.Encoder;
@@ -41,5 +43,28 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         }
 
         return ret;
+    }
+
+    @Override
+    public ArrayList<Wedka> getWedki(int rybak) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Wedkarz> getWedkarze() {
+        ArrayList<Wedkarz> arr = new ArrayList<>();
+        String sql = "select * from projektid.wędkarze order by 1";
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                arr.add(new Wedkarz(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4), rs.getTimestamp(5)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return arr;
     }
 }

@@ -1,5 +1,6 @@
 package Start;
 
+import View.MenuWindow;
 import database.DatabaseHandler;
 import database.DatabaseHandlerImplementation;
 import javafx.application.Application;
@@ -22,7 +23,6 @@ public class StartMenu extends Application {
         Scene scene = new Scene(root, 800, 400);
         stage.setScene(scene);
 
-
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.getIcons().add(new Image("file:src/main/resources/czapka.png"));
         stage.setTitle("Rybak v1");
@@ -30,6 +30,8 @@ public class StartMenu extends Application {
 
         DatabaseHandler db = new DatabaseHandlerImplementation();
         db.connect();
+        MenuWindow mw = loader.getController();
+        mw.setDb(db);
         ArrayList<String> a = db.getFish();
         for(String fish: a) {
             System.out.println(fish);
