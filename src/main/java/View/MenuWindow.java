@@ -91,9 +91,9 @@ public class MenuWindow  implements Initializable{
         aStage.setScene(scene);
         aStage.show();*/
 
-        wedkarzTab.setStyle("-fx-background-image: url(wedkarz.png); -fx-cursor: hand");
-        turniejTab.setStyle("-fx-background-image: url(turniej.png); -fx-cursor: hand");
-        RynekTab.setStyle("-fx-background-image: url(ryby.png); -fx-cursor: hand");
+        //wedkarzTab.setStyle("-fx-background-image: url(wedkarz.png); -fx-cursor: hand");
+      //  turniejTab.setStyle("-fx-background-image: url(turniej.png); -fx-cursor: hand");
+       // RynekTab.setStyle("-fx-background-image: url(ryby.png); -fx-cursor: hand");
         sekretarzTab.setStyle("-fx-background-image: url(man.png); -fx-cursor: hand");
 
 
