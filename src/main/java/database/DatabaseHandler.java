@@ -1,5 +1,7 @@
 package database;
 
+import entities.Polow;
+import entities.Turniej;
 import entities.Wedka;
 import entities.Wedkarz;
 
@@ -15,4 +17,6 @@ public interface DatabaseHandler {
     ArrayList<String> getRodzaje();
     ArrayList<String> getMaterialy();
     void addWedka(int wedkarz, Wedka wedka);
+    ArrayList<Polow> getPolowy(int id, Turniej turniej);
+    ArrayList<Turniej> getTurnieje();
 }

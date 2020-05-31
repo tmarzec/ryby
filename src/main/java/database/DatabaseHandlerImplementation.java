@@ -1,6 +1,8 @@
 package database;
 
 
+import entities.Polow;
+import entities.Turniej;
 import entities.Wedka;
 import entities.Wedkarz;
 import org.postgresql.jdbc4.Jdbc4Array;
@@ -137,6 +139,47 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public ArrayList<Polow> getPolowy(int wedk, Turniej turniej) {
+        String sql="select p.data_polowu, zw.nazwa, r.nazwa, p.waga " +
+                "from projektid.polowy p join projektid.zbiorniki_wodne zw on zw.id_zbiornika=p.id_zbiornika " +
+                "join projektid.ryby r on p.ryba=r.id_ryby where p.wędkarz="+wedk;
+        if(!turniej.isDummy()) {
+            sql+=" and id_turnieju="+turniej.getId();
+        }
+        ArrayList<Polow> arr = new ArrayList<>();
+        try {
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+
+            while(rs.next()) {
+                arr.add(new Polow(rs.getTimestamp("data_polowu"), rs.getString(2), rs.getString(3), rs.getFloat(4), Float.valueOf("12.1")));
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return arr;
+    }
+
+    @Override
+    public ArrayList<Turniej> getTurnieje() {
+        String sql="select t.id_turnieju, t.data_turnieju, t.rodzaj_konkurencji, zw.nazwa "+
+                "from projektid.turnieje t join projektid.zbiorniki_wodne zw on zw.id_zbiornika=t.miejsce;";
+
+        ArrayList<Turniej> arr = new ArrayList<>();
+        try {
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+
+            while(rs.next()) {
+                arr.add(new Turniej(rs.getInt(1), rs.getString(4), rs.getDate(2), rs.getString(3)));
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return arr;
     }
 
     private ArrayList<String> getStrings(ArrayList<String> arr, String sql) {

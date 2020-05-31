@@ -2,8 +2,11 @@ package View;
 
 import database.DatabaseHandler;
 import entities.Polow;
+import entities.Turniej;
 import entities.Wedka;
 import entities.Wedkarz;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,7 +25,7 @@ public class wedkarzController implements Initializable {
     Stage owner;
     DatabaseHandler dh;
     int wedkarz;
-
+    Wedkarz our;
     @FXML
     private Text basicInfo;
 
@@ -50,7 +53,7 @@ public class wedkarzController implements Initializable {
     void addWedka(ActionEvent event) {
         if(materialyCB.getSelectionModel().isEmpty() || rodzajeCB.getSelectionModel().isEmpty()) return;
         dh.addWedka(wedkarz, new Wedka(rodzajeCB.getSelectionModel().getSelectedItem(),materialyCB.getSelectionModel().getSelectedItem()));
-        magic();//update
+        refresh();//update
     }
 
 
@@ -73,20 +76,34 @@ public class wedkarzController implements Initializable {
     private TableColumn<Polow, Float> pktCL;
 
     @FXML
-    private ComboBox<?> turniejBT;
+    private ComboBox<Turniej> turniejBT;
 
     public void setID(int id) {
         wedkarz=id;
     }
-
-    public void magic() {
-        Wedkarz our = dh.getWedkarz(wedkarz);
-        basicInfo.setText("Witaj " + our.getImie() + " " + our.getNazwisko()+"!");
+    public void refresh() {
         ArrayList<Wedka> arr = dh.getWedki(wedkarz);
         wedki.getItems().setAll(arr);
         materialyCB.getItems().setAll(dh.getMaterialy());
         rodzajeCB.getItems().setAll(dh.getRodzaje());
+        polowy.getItems().setAll(dh.getPolowy(wedkarz, turniejBT.getSelectionModel().getSelectedItem()));
 
+    }
+
+    ArrayList<Turniej> turniejs;
+    public void magic() {
+        our = dh.getWedkarz(wedkarz);
+        basicInfo.setText("Witaj " + our.getImie() + " " + our.getNazwisko()+"!");
+
+
+        ArrayList<Turniej> all = dh.getTurnieje();
+        all.add(0, new Turniej());
+        turniejs=all;
+
+        turniejBT.getItems().setAll(all);
+        turniejBT.getSelectionModel().select(0);
+
+        refresh();
     }
     //public void setStage(Stage stage){
     //    owner=stage;
@@ -99,6 +116,19 @@ public class wedkarzController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         rodzajCOL.setCellValueFactory(new PropertyValueFactory<>("rodzaj"));
         materialCOL.setCellValueFactory(new PropertyValueFactory<>("material"));
+
+        dataCL.setCellValueFactory(new PropertyValueFactory<>("kiedy"));
+        gdzieCL.setCellValueFactory(new PropertyValueFactory<>("gdzie"));
+        rybaCL.setCellValueFactory(new PropertyValueFactory<>("ryba"));
+        wagaCL.setCellValueFactory(new PropertyValueFactory<>("waga"));
+        pktCL.setCellValueFactory(new PropertyValueFactory<>("punkty"));
+
+        turniejBT.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                refresh();
+            }
+        });
     }
 
 }
