@@ -1,6 +1,7 @@
 package View;
 
 import database.DatabaseHandler;
+import entities.Polow;
 import entities.Wedka;
 import entities.Wedkarz;
 import javafx.event.ActionEvent;
@@ -13,6 +14,7 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -51,6 +53,28 @@ public class wedkarzController implements Initializable {
         magic();//update
     }
 
+
+    @FXML
+    private TableView<Polow> polowy;
+
+    @FXML
+    private TableColumn<Polow, Timestamp> dataCL;
+
+    @FXML
+    private TableColumn<Polow, String> gdzieCL;
+
+    @FXML
+    private TableColumn<Polow, String> rybaCL;
+
+    @FXML
+    private TableColumn<Polow, Float> wagaCL;
+
+    @FXML
+    private TableColumn<Polow, Float> pktCL;
+
+    @FXML
+    private ComboBox<?> turniejBT;
+
     public void setID(int id) {
         wedkarz=id;
     }
@@ -62,6 +86,7 @@ public class wedkarzController implements Initializable {
         wedki.getItems().setAll(arr);
         materialyCB.getItems().setAll(dh.getMaterialy());
         rodzajeCB.getItems().setAll(dh.getRodzaje());
+
     }
     //public void setStage(Stage stage){
     //    owner=stage;
