@@ -10,4 +10,9 @@ public interface DatabaseHandler {
     ArrayList<String> getFish();
     ArrayList<Wedka> getWedki(int rybak);
     ArrayList<Wedkarz> getWedkarze();
+    Wedkarz getWedkarz(int id);
+    boolean existsWedk(int wk);
+    ArrayList<String> getRodzaje();
+    ArrayList<String> getMaterialy();
+    void addWedka(int wedkarz, Wedka wedka);
 }

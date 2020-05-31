@@ -16,6 +16,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 public class MenuWindow extends Stage {
 
+    DatabaseHandler dh;
+
     @FXML
     private Pane wedkarzTab;
 
@@ -48,7 +50,14 @@ public class MenuWindow extends Stage {
     }
 
     @FXML
-    public void WedkarzWejdz(MouseEvent event) {
+    public void WedkarzWejdz(MouseEvent event) throws IOException {
+        wedkarzLoader=new FXMLLoader(getClass().getClassLoader().getResource("wedkID.fxml"));
+        wedkarzPane=wedkarzLoader.load();
+        wedkarzStage=new Stage();
+        wedkarzStage.setScene(new Scene(wedkarzPane));
+        wedkarzController =wedkarzLoader.getController();
+        wedkarzController.setDB(dh);
+        wedkarzController.setStage(wedkarzStage);
         wedkarzStage.show();
     }
 
@@ -86,7 +95,7 @@ public class MenuWindow extends Stage {
 
     }
     FXMLLoader wedkarzLoader = null;
-    wedkarzController wedkarzController=null;
+    WedkarzID wedkarzController=null;
     Pane wedkarzPane;
     Stage wedkarzStage;
 
@@ -106,16 +115,11 @@ public class MenuWindow extends Stage {
     Stage turniejStage;
 
     public void setDb(DatabaseHandler dh) {
-        wedkarzController.setBase(dh);
+        this.dh=dh;
     }
     @FXML
     public void initialize() throws IOException {
 
-        wedkarzLoader = new FXMLLoader(getClass().getClassLoader().getResource("wedkarz.fxml"));
-        wedkarzPane = wedkarzLoader.load();
-        wedkarzStage=new Stage();
-        wedkarzStage.setScene(new Scene(wedkarzPane));
-        wedkarzController = wedkarzLoader.getController();
 
         rynekLoader = new FXMLLoader(getClass().getClassLoader().getResource("rynek.fxml"));
         rynekPane = rynekLoader.load();
