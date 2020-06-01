@@ -143,18 +143,19 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
 
     @Override
     public ArrayList<Polow> getPolowy(int wedk, Turniej turniej) {
-        String sql="select p.data_polowu, zw.nazwa, r.nazwa, p.waga " +
+        String sql="select p.data_polowu, zw.nazwa, r.nazwa, p.waga,p.waga*get_cena(p.ryba, p.data_polowu::date) " +
                 "from projektid.polowy p join projektid.zbiorniki_wodne zw on zw.id_zbiornika=p.id_zbiornika " +
                 "join projektid.ryby r on p.ryba=r.id_ryby where p.wędkarz="+wedk;
         if(!turniej.isDummy()) {
             sql+=" and id_turnieju="+turniej.getId();
         }
+        sql += " order by 1 desc";
         ArrayList<Polow> arr = new ArrayList<>();
         try {
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
             while(rs.next()) {
-                arr.add(new Polow(rs.getTimestamp("data_polowu"), rs.getString(2), rs.getString(3), rs.getFloat(4), Float.valueOf("12.1")));
+                arr.add(new Polow(rs.getTimestamp("data_polowu"), rs.getString(2), rs.getString(3), rs.getFloat(4), rs.getFloat(5)));
             }
         }
         catch (Exception e) {
