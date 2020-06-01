@@ -3,14 +3,13 @@ package database;
 
 import entities.Polow;
 import entities.Turniej;
+
+
 import entities.Wedka;
 import entities.Wedkarz;
 import org.postgresql.jdbc4.Jdbc4Array;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class DatabaseHandlerImplementation implements DatabaseHandler {
@@ -47,6 +46,21 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     }
 
     @Override
+    public Integer getIdFish(String fish){
+        Integer ret=null;
+        String sql = "select * from projektid.ryby where nazwa="+"'"+fish+"'";
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            rs.next();
+            ret=rs.getInt(1);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+    @Override
     public ArrayList<Wedka> getWedki(int rybak) {
         ArrayList<Wedka> arr = new ArrayList<>();
         String sql = "select * from projektid.ekwipunek where id_karty="+rybak+" order by 1";
@@ -79,6 +93,101 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             e.printStackTrace();
         }
 
+        return arr;
+    }
+
+    @Override
+    public ArrayList<String> getZbiorniki() {
+        ArrayList<String> arr = new ArrayList<>();
+        String sql = "select nazwa from projektid.zbiorniki_wodne";
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                arr.add(rs.getString(1));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return arr;
+    }
+    private String miesiac(int id){
+        switch (id){
+            case 1:
+                return "Sty";
+            case 2:
+                return "Luty";
+            case 3:
+                return "Marz";
+            case 4:
+                return "Kwi";
+            case 5:
+                return "Maj";
+            case 6:
+                return "Czerw";
+            case 7:
+                return "Lip";
+            case 8:
+                return "Sie";
+            case 9:
+                return "Wrz";
+            case 10:
+                return "Paź";
+            case 11:
+                return "Lis";
+            case 12:
+                return "Gru";
+            default:
+                return "-";
+        }
+    }
+
+    @Override
+    public ArrayList<String> getOkresy(String fish) {
+        Integer id=getIdFish(fish);
+        ArrayList<String> arr = new ArrayList<>();
+        String sql="select od_msc from projektid.okresy_ochronne where id_ryby="+id;
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                arr.add( miesiac(rs.getInt(1)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for(String a : arr) a=a+"-";
+        sql="select do_msc  from projektid.okresy_ochronne where id_ryby="+id;
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            int i=0;
+            while (rs.next()) {
+                arr.set(i,arr.get(i) + miesiac(rs.getInt(1)));
+               i++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for(String a: arr)
+            System.out.println(a);
+        return arr;
+    }
+
+    @Override
+    public ArrayList<String> getPlaces(String fish) {
+        Integer id=getIdFish(fish);
+        ArrayList<String> arr = new ArrayList<>();
+        String sql = "select zw.nazwa from projektid.wystepowanie_ryb wr join projektid.zbiorniki_wodne zw on wr.zbiornik=zw.id_zbiornika where wr.ryba="+id+" order by 1";
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                arr.add(rs.getString(1));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return arr;
     }
 
@@ -181,6 +290,22 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             e.printStackTrace();
         }
         return arr;
+    }
+
+    @Override
+    public Float getActualPrice(String fish) {
+        Float toReturn=null;
+        Integer id=getIdFish(fish);
+        String sql="select cena from projektid.historia_cen_ryb where id_ryby="+id+"order by data_wprowadzenia DESC limit 1";
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            rs.next();
+            toReturn=rs.getFloat(1);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return toReturn;
     }
 
     private ArrayList<String> getStrings(ArrayList<String> arr, String sql) {

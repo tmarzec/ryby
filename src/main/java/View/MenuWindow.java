@@ -40,7 +40,14 @@ public class MenuWindow extends Stage {
 
     }
     @FXML
-    public void RynekWejdz(MouseEvent event) {
+    public void RynekWejdz(MouseEvent event) throws IOException {
+        rynekLoader = new FXMLLoader(getClass().getClassLoader().getResource("rynek.fxml"));
+        rynekPane = rynekLoader.load();
+        rynekController=rynekLoader.getController();
+        rynekController.setBase(dh);
+        rynekController.setChoiceBox();
+        rynekStage=new Stage();
+        rynekStage.setScene(new Scene(rynekPane));
         rynekStage.show();
     }
 
@@ -100,7 +107,7 @@ public class MenuWindow extends Stage {
     Stage wedkarzStage;
 
     FXMLLoader rynekLoader = null;
-   // wedkarzController controller=null;
+    rynekController rynekController=null;
     Pane rynekPane;
     Stage rynekStage;
 
@@ -119,13 +126,6 @@ public class MenuWindow extends Stage {
     }
     @FXML
     public void initialize() throws IOException {
-
-
-        rynekLoader = new FXMLLoader(getClass().getClassLoader().getResource("rynek.fxml"));
-        rynekPane = rynekLoader.load();
-        rynekStage=new Stage();
-        rynekStage.setScene(new Scene(rynekPane));
-
         sekretarzLoader = new FXMLLoader(getClass().getClassLoader().getResource("sekretarz.fxml"));
         sekretarzPane = sekretarzLoader.load();
         sekretarzStage=new Stage();
@@ -140,11 +140,6 @@ public class MenuWindow extends Stage {
         turniejTab.setStyle("-fx-background-image: url(turniej.png); -fx-cursor: hand");
         RynekTab.setStyle("-fx-background-image: url(ryby.png); -fx-cursor: hand");
         sekretarzTab.setStyle("-fx-background-image: url(man.png); -fx-cursor: hand");
-
-
     }
-
-
-
 }
 
