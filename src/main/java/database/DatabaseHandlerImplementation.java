@@ -11,7 +11,6 @@ import entities.Wedkarz;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import org.postgresql.*;
 
 public class DatabaseHandlerImplementation implements DatabaseHandler {
     Connection conn;
@@ -30,13 +29,16 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             e.printStackTrace();
         }
     }
-    ResultSet getRS(Statement st, String sql) throws SQLException {
-        ResultSet rs=null;
+    ResultSet getRS(String sql) throws SQLException {
+        Statement st;
+        ResultSet rs;
         try {
+            st=conn.createStatement();
             rs=st.executeQuery(sql);
         } catch (Exception throwables) {
             conn.close();
             connect();
+            st=conn.createStatement();
             rs=st.executeQuery(sql);
         }
         return rs;
@@ -46,7 +48,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         ArrayList<String> ret = new ArrayList<>();
         String sql = "select * from projektid.ryby";
         try {
-            ResultSet rs=getRS(conn.createStatement(), sql);
+            ResultSet rs=getRS(sql);
 
             while (rs.next()) {
                 ret.add(rs.getString("nazwa"));
@@ -63,7 +65,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         Integer ret=null;
         String sql = "select * from projektid.ryby where nazwa="+"'"+fish+"'";
         try {
-            ResultSet rs=getRS(conn.createStatement(), sql);
+            ResultSet rs=getRS(sql);
             rs.next();
             ret=rs.getInt(1);
         }
@@ -77,7 +79,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         ArrayList<Wedka> arr = new ArrayList<>();
         String sql = "select * from projektid.ekwipunek where id_karty="+rybak+" order by 1";
         try {
-            ResultSet rs=getRS(conn.createStatement(), sql);
+            ResultSet rs=getRS(sql);
 
             while (rs.next()) {
                 arr.add(new Wedka(rs.getString(2), rs.getString(3)));
@@ -94,7 +96,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         ArrayList<Wedkarz> arr = new ArrayList<>();
         String sql = "select * from projektid.wędkarze order by 1";
         try {
-            ResultSet rs=getRS(conn.createStatement(), sql);
+            ResultSet rs=getRS(sql);
 
             while (rs.next()) {
                 arr.add(new Wedkarz(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4), rs.getTimestamp(5)));
@@ -111,7 +113,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         ArrayList<String> arr = new ArrayList<>();
         String sql = "select nazwa from projektid.zbiorniki_wodne";
         try {
-            ResultSet rs=getRS(conn.createStatement(), sql);
+            ResultSet rs=getRS(sql);
 
             while (rs.next()) {
                 arr.add(rs.getString(1));
@@ -129,7 +131,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         ArrayList<String> arr = new ArrayList<>();
         String sql = "select nazwa from projektid.zbiorniki_wodne where okrąg="+"'"+okrag+"'";
         try {
-            ResultSet rs=getRS(conn.createStatement(), sql);
+            ResultSet rs=getRS(sql);
             while (rs.next()) {
                 arr.add(rs.getString(1));
             }
@@ -176,7 +178,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         ArrayList<String> arr = new ArrayList<>();
         String sql="select od_msc from projektid.okresy_ochronne where id_ryby="+id;
         try {
-            ResultSet rs=getRS(conn.createStatement(), sql);
+            ResultSet rs=getRS(sql);
 
             while (rs.next()) {
                 arr.add( miesiac(rs.getInt(1)));
@@ -187,7 +189,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         for(String a : arr) a=a+"-";
         sql="select do_msc  from projektid.okresy_ochronne where id_ryby="+id;
         try {
-            ResultSet rs=getRS(conn.createStatement(), sql);
+            ResultSet rs=getRS(sql);
 
             int i=0;
             while (rs.next()) {
@@ -208,7 +210,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         ArrayList<String> arr = new ArrayList<>();
         String sql = "select zw.nazwa from projektid.wystepowanie_ryb wr join projektid.zbiorniki_wodne zw on wr.zbiornik=zw.id_zbiornika where wr.ryba="+id+" order by 1";
         try {
-            ResultSet rs=getRS(conn.createStatement(), sql);
+            ResultSet rs=getRS(sql);
 
             while (rs.next()) {
                 arr.add(rs.getString(1));
@@ -223,7 +225,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     public Wedkarz getWedkarz(int id) {
         String sql = "select * from projektid.wędkarze where karta_rybacka="+id;
         try {
-            ResultSet rs=getRS(conn.createStatement(), sql);
+            ResultSet rs=getRS(sql);
 
             rs.next();
             return new Wedkarz(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4), rs.getTimestamp(5));
@@ -238,7 +240,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     public boolean existsWedk(int wkID) {
         String sql = "select exists(select * from projektid.wędkarze where karta_rybacka="+wkID+")";
         try {
-            ResultSet rs=getRS(conn.createStatement(), sql);
+            ResultSet rs=getRS(sql);
 
             rs.next();
             boolean res = rs.getBoolean(1);
@@ -266,12 +268,15 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     }
 
 
-    void makeUpdate(Statement st, String sql) throws Exception {
+    void makeUpdate(String sql) throws Exception {
+        Statement st;
         try {
+            st=conn.createStatement();
             st.executeUpdate(sql);
         } catch (Exception throwables) {
             conn.close();
             connect();
+            st=conn.createStatement();
             st.executeUpdate(sql);
         }
     }
@@ -280,7 +285,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     public void addWedka(int wedkarz, Wedka wedka) {
         String sql = "insert into projektid.ekwipunek values("+wedkarz+",'"+wedka.getRodzaj()+"','"+wedka.getMaterial()+"')";
         try {
-            makeUpdate(conn.createStatement(), sql);
+            makeUpdate(sql);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -298,7 +303,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         sql += " order by 1 desc";
         ArrayList<Polow> arr = new ArrayList<>();
         try {
-            ResultSet rs=getRS(conn.createStatement(), sql);
+            ResultSet rs=getRS(sql);
 
             while(rs.next()) {
                 Timestamp a = rs.getTimestamp("data_polowu");
@@ -319,7 +324,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
 
         ArrayList<Turniej> arr = new ArrayList<>();
         try {
-            ResultSet rs=getRS(conn.createStatement(), sql);
+            ResultSet rs=getRS(sql);
 
             while(rs.next()) {
                 arr.add(new Turniej(rs.getInt(1), rs.getString(4), rs.getDate(2), rs.getString(3)));
@@ -338,7 +343,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
 
         ArrayList<Turniej> arr = new ArrayList<>();
         try {
-            ResultSet rs=getRS(conn.createStatement(), sql);
+            ResultSet rs=getRS(sql);
 
             while(rs.next()) {
                 arr.add(new Turniej(rs.getInt(1), rs.getString(4), rs.getDate(2), rs.getString(3)));
@@ -363,7 +368,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         Integer id=getIdFish(fish);
         String sql="select cena from projektid.historia_cen_ryb where id_ryby="+id+"order by data_wprowadzenia DESC limit 1";
         try {
-            ResultSet rs=getRS(conn.createStatement(), sql);
+            ResultSet rs=getRS(sql);
             rs.next();
             toReturn=rs.getFloat(1);
         } catch (SQLException throwables) {
@@ -374,7 +379,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
 
     private ArrayList<String> getStrings(ArrayList<String> arr, String sql) {
         try {
-            ResultSet rs=getRS(conn.createStatement(), sql);
+            ResultSet rs=getRS(sql);
             while(rs.next()) {
                 arr.add(rs.getString(1));
             }
