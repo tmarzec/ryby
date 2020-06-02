@@ -3,13 +3,13 @@ package entities;
 import java.sql.Timestamp;
 
 public class Polow {
-    Timestamp kiedy;
+    String kiedy;
     String gdzie;
     String ryba;
     Float waga;
     Float punkty;
 
-    public Polow(Timestamp kiedy, String gdzie, String ryba, Float waga, Float punkty) {
+    public Polow(String kiedy, String gdzie, String ryba, Float waga, Float punkty) {
         this.kiedy = kiedy;
         this.gdzie = gdzie;
         this.ryba = ryba;
@@ -17,7 +17,7 @@ public class Polow {
         this.punkty = punkty;
     }
 
-    public Timestamp getKiedy() {
+    public String getKiedy() {
         return kiedy;
     }
 

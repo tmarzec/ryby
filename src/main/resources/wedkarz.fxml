@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -12,7 +14,7 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="495.0" prefWidth="819.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.wedkarzController">
    <children>
       <Text fx:id="basicInfo" layoutX="63.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="216.13671875" />
-      <TableView fx:id="wedki" layoutX="37.0" layoutY="148.0" prefHeight="200.0" prefWidth="200.0">
+      <TableView fx:id="wedki" layoutX="37.0" layoutY="148.0" prefHeight="200.0" prefWidth="205.0">
         <columns>
           <TableColumn fx:id="rodzajCOL" editable="false" prefWidth="100.0" resizable="false" sortable="false" text="rodzaj" />
           <TableColumn fx:id="materialCOL" editable="false" prefWidth="100.0" resizable="false" sortable="false" text="materiał" />
@@ -25,21 +27,31 @@
       <Button fx:id="addWB" layoutX="201.0" layoutY="362.0" mnemonicParsing="false" onAction="#addWedka" text="dodaj" />
       <ChoiceBox fx:id="materialyCB" layoutX="130.0" layoutY="363.0" prefHeight="16.0" prefWidth="55.0" />
       <ChoiceBox fx:id="rodzajeCB" layoutX="46.0" layoutY="363.0" prefHeight="7.0" prefWidth="68.0" />
-      <TableView fx:id="polowy" layoutX="410.0" layoutY="138.0" prefHeight="210.0" prefWidth="388.0">
+      <TableView fx:id="polowy" layoutX="386.0" layoutY="138.0" prefHeight="210.0" prefWidth="412.0">
         <columns>
-          <TableColumn fx:id="dataCL" editable="false" prefWidth="86.0" resizable="false" sortable="false" text="data" />
-          <TableColumn fx:id="gdzieCL" editable="false" prefWidth="96.0" resizable="false" sortable="false" text="zbiornik" />
-            <TableColumn fx:id="rybaCL" editable="false" prefWidth="73.0" resizable="false" sortable="false" text="ryba" />
-            <TableColumn fx:id="wagaCL" editable="false" prefWidth="48.0" resizable="false" sortable="false" text="waga" />
-            <TableColumn fx:id="pktCL" editable="false" prefWidth="85.0" resizable="false" sortable="false" text="punkty" />
+          <TableColumn fx:id="dataCL" editable="false" prefWidth="117.0" resizable="false" sortable="false" text="data" />
+          <TableColumn fx:id="gdzieCL" editable="false" prefWidth="87.0" resizable="false" sortable="false" text="zbiornik" />
+            <TableColumn fx:id="rybaCL" editable="false" resizable="false" sortable="false" text="ryba" />
+            <TableColumn fx:id="wagaCL" editable="false" prefWidth="68.0" resizable="false" sortable="false" text="waga" />
+            <TableColumn fx:id="pktCL" editable="false" prefWidth="57.0" resizable="false" sortable="false" text="punkty" />
         </columns>
       </TableView>
-      <Text layoutX="410.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Połowy" wrappingWidth="216.13671875">
+      <Text layoutX="386.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Połowy" wrappingWidth="216.13671875">
          <font>
             <Font size="29.0" />
          </font>
       </Text>
-      <ComboBox fx:id="turniejBT" layoutX="410.0" layoutY="390.0" prefWidth="150.0" />
-      <Text layoutX="410.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" text="turniej:" />
+      <ComboBox fx:id="turniejBT" layoutX="386.0" layoutY="386.0" prefWidth="150.0" />
+      <Text layoutX="386.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="turniej:" />
+      <CheckBox fx:id="turniejON" layoutX="171.0" layoutY="426.0" mnemonicParsing="false" onAction="#showHide" prefHeight="16.0" prefWidth="68.0" selected="true" text="turniej" />
+      <ChoiceBox fx:id="turniejIN" layoutX="96.0" layoutY="456.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="zbiornikIN" layoutX="254.0" layoutY="456.0" prefWidth="150.0" />
+      <Text layoutX="254.0" layoutY="408.0" strokeType="OUTSIDE" strokeWidth="0.0" text="miejsce" />
+      <ChoiceBox fx:id="rybaIN" layoutX="411.0" layoutY="456.0" prefHeight="17.0" prefWidth="139.0" />
+      <Text layoutX="411.0" layoutY="439.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ryba" />
+      <TextField layoutX="560.0" layoutY="457.0" prefHeight="16.0" prefWidth="55.0" />
+      <Text layoutX="560.0" layoutY="439.0" strokeType="OUTSIDE" strokeWidth="0.0" text="waga" />
+      <Button fx:id="inpPolow" layoutX="683.0" layoutY="438.0" mnemonicParsing="false" onAction="#insPolow" prefHeight="39.0" prefWidth="55.0" text="dodaj" />
+      <ChoiceBox fx:id="okregIN" layoutX="254.0" layoutY="430.0" prefWidth="150.0" />
    </children>
 </Pane>

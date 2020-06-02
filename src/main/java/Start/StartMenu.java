@@ -11,7 +11,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class StartMenu extends Application {

@@ -88,6 +88,9 @@ public class wedkarzController implements Initializable {
         rodzajeCB.getItems().setAll(dh.getRodzaje());
         polowy.getItems().setAll(dh.getPolowy(wedkarz, turniejBT.getSelectionModel().getSelectedItem()));
 
+        //String okr = okregIN.getSelectionModel().getSelectedItem();
+        //zbiornikIN.getItems().setAll(dh.getZbiorniki(okr));
+
     }
 
     ArrayList<Turniej> turniejs;
@@ -103,11 +106,57 @@ public class wedkarzController implements Initializable {
         turniejBT.getItems().setAll(all);
         turniejBT.getSelectionModel().select(0);
 
+
+        turniejIN.getItems().setAll(dh.getAktTurnieje());
+        turniejIN.getSelectionModel().select(0);
+
+
+        turniejON.selectedProperty().setValue(true);
+
+        zbiornikIN.getItems().setAll(dh.getZbiorniki());
+
+        rybaIN.getItems().setAll(dh.getFish());
+
+        //okregIN.getItems().setAll(dh.getOkregi());
+        //okregIN.getSelectionModel().select(0);
+        //okregIN.getSelectionModel().selectedIndexProperty().addListener((observableValue, number, t1) -> refresh());
         refresh();
     }
     //public void setStage(Stage stage){
     //    owner=stage;
     //}
+
+    @FXML
+    private ChoiceBox<String> zbiornikIN;
+
+    @FXML
+    private ChoiceBox<String> rybaIN;
+
+    @FXML
+    private Button inpPolow;
+
+    @FXML
+    void insPolow(ActionEvent event) {
+        //add button
+    }
+    //@FXML
+    //private ChoiceBox<String> okregIN;
+
+    @FXML
+    private CheckBox turniejON;
+
+    @FXML
+    private ChoiceBox<Turniej> turniejIN;
+
+    @FXML
+    void showHide(ActionEvent event) {
+        boolean disable = !turniejON.selectedProperty().get();
+        boolean enable = !disable;
+        turniejIN.setDisable(disable);
+
+    }
+
+
 
     public void setBase(DatabaseHandler db) {
         this.dh=db;
