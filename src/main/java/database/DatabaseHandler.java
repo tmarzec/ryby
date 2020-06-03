@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public interface DatabaseHandler {
     void connect();
     ArrayList<String> getFish();
+    ArrayList<String> getFish(String miejsce);
     ArrayList<Wedka> getWedki(int rybak);
     ArrayList<Wedkarz> getWedkarze();
 

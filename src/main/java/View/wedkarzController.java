@@ -8,6 +8,7 @@ import entities.Wedkarz;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -82,7 +83,10 @@ public class wedkarzController implements Initializable {
         wedkarz=id;
     }
     public void refresh() {
+        System.out.println(wagaIN.getCharacters());
+
         ArrayList<Wedka> arr = dh.getWedki(wedkarz);
+
         wedki.getItems().setAll(arr);
         materialyCB.getItems().setAll(dh.getMaterialy());
         rodzajeCB.getItems().setAll(dh.getRodzaje());
@@ -107,19 +111,37 @@ public class wedkarzController implements Initializable {
         turniejBT.getSelectionModel().select(0);
 
 
-        turniejIN.getItems().setAll(dh.getAktTurnieje());
+
+        ArrayList<Turniej> turniejs = dh.getAktTurnieje();
+        turniejIN.getItems().setAll(turniejs);
         turniejIN.getSelectionModel().select(0);
 
+        turniejON.selectedProperty().setValue(false);
+        turniejIN.setDisable(true);
+        if(turniejs.isEmpty()) {
+            turniejIN.setDisable(true);
+            turniejON.setDisable(true);
+            turniejON.selectedProperty().setValue(false);
+        }
 
-        turniejON.selectedProperty().setValue(true);
-
+        turniejIN.setOnAction(new EventHandler<ActionEvent>() {//setting miejsce when its disabled
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                zbiornikIN.getSelectionModel().select(turniejIN.getSelectionModel().getSelectedItem().getMiejsce());
+            }
+        });
+        zbiornikIN.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                rybaIN.getItems().setAll(dh.getFish(zbiornikIN.getSelectionModel().getSelectedItem()));
+                rybaIN.getSelectionModel().select(0);
+            }
+        });
         zbiornikIN.getItems().setAll(dh.getZbiorniki());
 
         rybaIN.getItems().setAll(dh.getFish());
 
-        //okregIN.getItems().setAll(dh.getOkregi());
-        //okregIN.getSelectionModel().select(0);
-        //okregIN.getSelectionModel().selectedIndexProperty().addListener((observableValue, number, t1) -> refresh());
+
         refresh();
     }
     //public void setStage(Stage stage){
@@ -143,6 +165,9 @@ public class wedkarzController implements Initializable {
     //private ChoiceBox<String> okregIN;
 
     @FXML
+    private TextField wagaIN;
+
+    @FXML
     private CheckBox turniejON;
 
     @FXML
@@ -153,7 +178,13 @@ public class wedkarzController implements Initializable {
         boolean disable = !turniejON.selectedProperty().get();
         boolean enable = !disable;
         turniejIN.setDisable(disable);
-
+        if(enable) {
+            zbiornikIN.getSelectionModel().select(turniejIN.getSelectionModel().getSelectedItem().getMiejsce());
+            zbiornikIN.setDisable(true);
+        }
+        else {
+            zbiornikIN.setDisable(false);
+        }
     }
 
 
@@ -173,6 +204,12 @@ public class wedkarzController implements Initializable {
         pktCL.setCellValueFactory(new PropertyValueFactory<>("punkty"));
 
         turniejBT.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                refresh();
+            }
+        });
+        rybaIN.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 refresh();

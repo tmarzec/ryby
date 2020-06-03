@@ -11,9 +11,12 @@ import entities.Wedkarz;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class DatabaseHandlerImplementation implements DatabaseHandler {
     Connection conn;
+    Properties pro = new Properties();
     @Override
     public void connect() {
         try {
@@ -21,7 +24,11 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             System.out.println("conn");
             //DriverManager.setLoginTimeout(1<<31);
 
-            conn=DriverManager.getConnection("jdbc:postgresql://40.85.112.201:5432/database", "postgres", "morszczukgora");
+             pro.put("user", "postgres");
+             pro.put("password", "morszczukgora");
+             pro.put("autoReconnect", "true");
+            conn=DriverManager.getConnection("jdbc:postgresql://40.85.112.201:5432/database", pro);
+
 
             System.out.println("successfully connected");
         }
@@ -33,6 +40,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         Statement st;
         ResultSet rs;
         try {
+            //conn = DriverManager.getConnection("jdbc:postgresql://40.85.112.201:5432/database", pro);
             st=conn.createStatement();
             rs=st.executeQuery(sql);
         } catch (Exception throwables) {
@@ -58,6 +66,15 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         }
 
         return ret;
+    }
+
+    @Override
+    public ArrayList<String> getFish(String miejsce) {
+        ArrayList<String>res=new ArrayList<>();
+        String sql = "select r.nazwa from projektid.ryby r join projektid.wystepowanie_ryb wr on wr.ryba=r.id_ryby "+
+                "join projektid.zbiorniki_wodne  zw on zw.id_zbiornika=wr.zbiornik where zw.nazwa='"+miejsce+"'";
+        getStrings(res, sql);
+        return res;
     }
 
     @Override

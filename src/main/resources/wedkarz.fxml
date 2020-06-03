@@ -46,12 +46,11 @@
       <CheckBox fx:id="turniejON" layoutX="171.0" layoutY="426.0" mnemonicParsing="false" onAction="#showHide" prefHeight="16.0" prefWidth="68.0" selected="true" text="turniej" />
       <ChoiceBox fx:id="turniejIN" layoutX="96.0" layoutY="456.0" prefWidth="150.0" />
       <ChoiceBox fx:id="zbiornikIN" layoutX="254.0" layoutY="456.0" prefWidth="150.0" />
-      <Text layoutX="254.0" layoutY="408.0" strokeType="OUTSIDE" strokeWidth="0.0" text="miejsce" />
+      <Text layoutX="254.0" layoutY="438.0" strokeType="OUTSIDE" strokeWidth="0.0" text="miejsce" />
       <ChoiceBox fx:id="rybaIN" layoutX="411.0" layoutY="456.0" prefHeight="17.0" prefWidth="139.0" />
       <Text layoutX="411.0" layoutY="439.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ryba" />
-      <TextField layoutX="560.0" layoutY="457.0" prefHeight="16.0" prefWidth="55.0" />
+      <TextField fx:id="wagaIN" layoutX="560.0" layoutY="457.0" prefHeight="16.0" prefWidth="55.0" />
       <Text layoutX="560.0" layoutY="439.0" strokeType="OUTSIDE" strokeWidth="0.0" text="waga" />
       <Button fx:id="inpPolow" layoutX="683.0" layoutY="438.0" mnemonicParsing="false" onAction="#insPolow" prefHeight="39.0" prefWidth="55.0" text="dodaj" />
-      <ChoiceBox fx:id="okregIN" layoutX="254.0" layoutY="430.0" prefWidth="150.0" />
    </children>
 </Pane>
