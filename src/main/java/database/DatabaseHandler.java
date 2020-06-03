@@ -5,6 +5,8 @@ import entities.Turniej;
 import entities.Wedka;
 import entities.Wedkarz;
 import exceptions.CenaDwaRazy;
+import exceptions.ParaRybaZbiornikJest;
+import exceptions.ZlyOkres;
 import exceptions.NoProperRod;
 import exceptions.RodAlrThere;
 
@@ -30,12 +32,13 @@ public interface DatabaseHandler {
 
     void addWedka(int wedkarz, Wedka wedka) throws RodAlrThere;
     void addPrice(String fish,Float money) throws CenaDwaRazy;
+    void addWystepowanie(String fish, String zbiornik) throws ParaRybaZbiornikJest;
     Float getActualPrice(String fish);
     Integer getIdFish(String fish);
     Integer getIdZbiornik(String miejsce);
     ArrayList<Polow> getPolowy(int id, Turniej turniej);
     ArrayList<Turniej> getTurnieje();
     ArrayList<Turniej> getAktTurnieje();
-
+    void addOkres(String fish,String text) throws ZlyOkres;
     void addPolow(Wedkarz wedk, Polow xd, Turniej turn) throws NoProperRod;
 }

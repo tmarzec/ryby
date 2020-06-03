@@ -46,7 +46,7 @@
          </children>
       </GridPane>
       <TextField fx:id="poleCena" layoutX="150.0" layoutY="214.0" prefHeight="26.0" prefWidth="106.0" />
-      <TextField layoutX="446.0" layoutY="214.0" prefHeight="26.0" prefWidth="150.0" />
+      <TextField fx:id="okresPole" layoutX="446.0" layoutY="214.0" prefHeight="26.0" prefWidth="150.0" />
       <Button fx:id="commiButton" layoutX="256.0" layoutY="214.0" mnemonicParsing="false" onAction="#commit" prefHeight="26.0" prefWidth="190.0" text="Zatwierdź miejsce" />
       <TextField fx:id="TextInfo" layoutX="150.0" layoutY="373.0" prefHeight="26.0" prefWidth="448.0" promptText="info" />
       <ComboBox fx:id="Zbiorniki" layoutX="256.0" layoutY="269.0" onAction="#setZbiorniki" prefHeight="26.0" prefWidth="190.0" promptText="Zbiorniki wodne" />

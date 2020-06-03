@@ -8,6 +8,8 @@ import entities.Turniej;
 import entities.Wedka;
 import entities.Wedkarz;
 import exceptions.CenaDwaRazy;
+import exceptions.ParaRybaZbiornikJest;
+import exceptions.ZlyOkres;
 import exceptions.NoProperRod;
 import exceptions.RodAlrThere;
 
@@ -69,6 +71,27 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     }
 
     @Override
+    public void addOkres(String fish,String text) throws ZlyOkres {
+        int id=getIdFish(fish);
+        boolean where=true;
+        String a="";
+        String b="";
+        for(char k : text.toCharArray()){
+            if(k!='-' && where) a+=k;
+            else where=false;
+            if(k!='-' && !where) b+=k;
+        }
+        String sql = "insert into projektid.okresy_ochronne values("+id+","+a+","+b+")";
+        System.out.println(sql);
+        try {
+            makeUpdate(sql);
+        }
+        catch (Exception e) {
+           e.printStackTrace();
+        }
+    }
+
+    @Override
     public Integer getIdZbiornik(String miejsce) {
         String sql = "select * from projektid.zbiorniki_wodne zw where zw.nazwa='"+miejsce+"'";
         try {
@@ -92,7 +115,6 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             connect();
             st=conn.createStatement();
             st.executeUpdate(sql);
-            //System.out.println(st.getWarnings().getNextWarning());
         }
     }
     ResultSet getRS(String sql) throws SQLException {
@@ -262,7 +284,9 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        for(String a : arr) a=a+"-";
+        for(int i=0;i<arr.size();i++){
+            arr.set(i,arr.get(i) + '-');
+        }
         sql="select do_msc  from projektid.okresy_ochronne where id_ryby="+id;
         try {
             ResultSet rs=getRS(sql);
@@ -365,6 +389,19 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         }
         catch (Exception e) {
             throw new CenaDwaRazy();
+        }
+    }
+
+    @Override
+    public void addWystepowanie(String fish, String zbiornik) throws ParaRybaZbiornikJest {
+        int idRyb=getIdFish(fish);
+        int idZb=getIdZbiornik(zbiornik);
+        String sql = "insert into projektid.wystepowanie_ryb values("+idZb+","+idRyb+")";
+        try {
+            makeUpdate(sql);
+        }
+        catch (Exception e) {
+            throw new ParaRybaZbiornikJest();
         }
     }
 
