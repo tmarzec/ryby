@@ -36,6 +36,60 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public boolean chroniona(String ryba) {
+        int rybaId=getIdFish(ryba);
+        String sql = "select projektid.ochrona_ryby("+rybaId+","+"extract(month from now())::int)";
+        try {
+            ResultSet rs = getRS(sql);
+            rs.next();
+            return rs.getBoolean(1);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public void addPolow(Wedkarz wedk, Polow xd, Turniej turn) {
+        String sql = "insert into projektid.polowy values("+wedk.getKarta()+",now(),"+(turn.isDummy()? null:turn.getId())+","+getIdFish(xd.getRyba())+
+                ','+xd.getWaga()+','+getIdZbiornik(xd.getGdzie())+')';
+        System.out.println(sql);
+        try {
+            makeUpdate(sql);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Integer getIdZbiornik(String miejsce) {
+        String sql = "select * from projektid.zbiorniki_wodne zw where zw.nazwa='"+miejsce+"'";
+        try {
+            ResultSet rs = getRS(sql);
+            rs.next();
+            return rs.getInt(1);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return null;
+    }
+
+    void makeUpdate(String sql) throws Exception {
+        Statement st;
+        try {
+            st=conn.createStatement();
+            st.executeUpdate(sql);
+        } catch (Exception throwables) {
+            conn.close();
+            connect();
+            st=conn.createStatement();
+            st.executeUpdate(sql);
+        }
+    }
     ResultSet getRS(String sql) throws SQLException {
         Statement st;
         ResultSet rs;
@@ -285,18 +339,6 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     }
 
 
-    void makeUpdate(String sql) throws Exception {
-        Statement st;
-        try {
-            st=conn.createStatement();
-            st.executeUpdate(sql);
-        } catch (Exception throwables) {
-            conn.close();
-            connect();
-            st=conn.createStatement();
-            st.executeUpdate(sql);
-        }
-    }
 
     @Override
     public void addWedka(int wedkarz, Wedka wedka) {

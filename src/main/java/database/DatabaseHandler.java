@@ -13,7 +13,7 @@ public interface DatabaseHandler {
     ArrayList<String> getFish(String miejsce);
     ArrayList<Wedka> getWedki(int rybak);
     ArrayList<Wedkarz> getWedkarze();
-
+    boolean chroniona(String ryba);
     ArrayList<String> getZbiorniki();
     ArrayList<String> getZbiorniki(String okrag);
 
@@ -28,9 +28,10 @@ public interface DatabaseHandler {
     void addWedka(int wedkarz, Wedka wedka);
     Float getActualPrice(String fish);
     Integer getIdFish(String fish);
+    Integer getIdZbiornik(String miejsce);
     ArrayList<Polow> getPolowy(int id, Turniej turniej);
     ArrayList<Turniej> getTurnieje();
     ArrayList<Turniej> getAktTurnieje();
 
-
+    void addPolow(Wedkarz wedk, Polow xd, Turniej turn);
 }

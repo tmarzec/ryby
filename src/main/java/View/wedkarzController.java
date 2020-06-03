@@ -130,10 +130,17 @@ public class wedkarzController implements Initializable {
                 zbiornikIN.getSelectionModel().select(turniejIN.getSelectionModel().getSelectedItem().getMiejsce());
             }
         });
-        zbiornikIN.setOnAction(new EventHandler<ActionEvent>(){
+        zbiornikIN.setOnAction(new EventHandler<ActionEvent>(){//setting rybs when ...
             @Override
             public void handle(ActionEvent actionEvent) {
-                rybaIN.getItems().setAll(dh.getFish(zbiornikIN.getSelectionModel().getSelectedItem()));
+                rybaIN.getItems().clear();
+                ArrayList<String> fish = dh.getFish(zbiornikIN.getSelectionModel().getSelectedItem());
+                for(String morszczuk:fish) {
+                    if(!dh.chroniona(morszczuk)) {
+                        rybaIN.getItems().add(morszczuk);
+                    }
+                }
+                //rybaIN.getItems().setAll(dh.getFish(zbiornikIN.getSelectionModel().getSelectedItem()));
                 rybaIN.getSelectionModel().select(0);
             }
         });
@@ -160,6 +167,15 @@ public class wedkarzController implements Initializable {
     @FXML
     void insPolow(ActionEvent event) {
         //add button
+        Turniej xd = new Turniej();
+        if(turniejON.selectedProperty().get()) {
+            xd = turniejIN.getSelectionModel().getSelectedItem();
+        }
+        //bad input to waga?
+        Polow a = new Polow("", zbiornikIN.getSelectionModel().getSelectedItem(), rybaIN.getSelectionModel().getSelectedItem(),
+                Float.parseFloat(wagaIN.getCharacters().toString()), 0.f);
+        dh.addPolow(our, a, xd);
+        refresh();
     }
     //@FXML
     //private ChoiceBox<String> okregIN;
