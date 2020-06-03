@@ -7,6 +7,7 @@ import entities.Turniej;
 
 import entities.Wedka;
 import entities.Wedkarz;
+import exceptions.CenaDwaRazy;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -265,7 +266,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             int i=0;
             while (rs.next()) {
                 arr.set(i,arr.get(i) + miesiac(rs.getInt(1)));
-               i++;
+                i++;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -348,6 +349,18 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         }
         catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addPrice(String fish, Float money) throws CenaDwaRazy {
+        int id=getIdFish(fish);
+        String sql = "insert into projektid.historia_cen_ryb values("+id+","+money+","+"current_date)";
+        try {
+            makeUpdate(sql);
+        }
+        catch (Exception e) {
+            throw new CenaDwaRazy();
         }
     }
 

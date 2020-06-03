@@ -37,10 +37,7 @@ public class StartMenu extends Application {
 
         MenuWindow mw = loader.getController();
         mw.setDb(db);
-        //ArrayList<String> a = db.getFish();
-        //for(String fish: a) {
-        //    System.out.println(fish);
-        //}
+
     }
 
 

@@ -2,6 +2,7 @@ package View;
 
 
 import database.DatabaseHandler;
+import exceptions.CenaDwaRazy;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -9,16 +10,14 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.util.Pair;
+import tools.CustomBox;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,6 +26,7 @@ import java.util.ResourceBundle;
 public class rynekController implements Initializable {
     String myFish=null;
     DatabaseHandler dh;
+    final String regExp = "[0-9]+([,.][0-9]{1,2})?";
     public void setBase(DatabaseHandler db) {
         this.dh=db;
     }
@@ -38,10 +38,13 @@ public class rynekController implements Initializable {
     private Pane rybaPNG;
     @FXML
     private Text price;
-
+    @FXML
+    private TextField poleCena;
+    private CustomBox wystepowanie;
     @FXML
     private TableView<String> places;
-
+    @FXML
+    private ComboBox<String> Zbiorniki;
     @FXML
     private TableColumn<String, String> placeCOL;
 
@@ -59,17 +62,40 @@ public class rynekController implements Initializable {
 
     @FXML
     private Button commiButton;
+    @FXML
+    private GridPane Grid;
+    @FXML
+    private TextField TextInfo;
 
     @FXML
     void DodajCene(ActionEvent event) {
-
+        String str=poleCena.getText();
+        Float money=null;
+        if(!str.matches(regExp) || str.equals("")){
+            poleCena.setText("Zły format!");
+        }else{
+            money=new Float(str);
+            try {
+                dh.addPrice(choiceBox.getValue(),money);
+            } catch (CenaDwaRazy cenaDwaRazy) {
+                TextInfo.setText("Zmiana ceny tylko raz dziennie!");
+            }
+            refresh();
+        }
     }
 
     @FXML
     void DodajOkres(ActionEvent event) {
 
     }
-
+    @FXML
+    void setZbiorniki(ActionEvent event) {
+        if(wystepowanie.getValue()==null)
+            TextInfo.setText("Najpierw wybierz okrąg!");
+        else{
+            Zbiorniki.setItems(FXCollections.observableArrayList(dh.getZbiorniki(wystepowanie.getValue())));
+        }
+    }
     @FXML
     void commit(ActionEvent event) {
 
@@ -85,135 +111,18 @@ public class rynekController implements Initializable {
 
     }
     private void setImage(Pane pane, String ryba){
-        Integer id=dh.getIdFish(ryba);
+        //Integer id=dh.getIdFish(ryba);
         Image logo;
-        switch (id){
-            case 1:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/szczupakf.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 2:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/wzdrega.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 3:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/wegorz.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 4:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/troc.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 5:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/ukleja.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 6:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/sandacz.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 7:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/tolpyga.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 8:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/karp.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 9:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/lin.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 10:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/losos.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 11:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/plocf.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 12:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/okonf.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 13:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/pstrag.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 14:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/krap.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 15:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/leszcz.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 16:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/lipien.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 17:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/sumf.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 18:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/brzana.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 19:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/amurf.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 20:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/karas.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 21:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/klen.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 22:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/bolen.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 23:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/doszf.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            case 24:
-                pane.getChildren().clear();
-                logo=new Image("file:src/main/resources/ryby/jaz.png");
-                pane.getChildren().add(new ImageView(logo));
-                break;
-            default:
-                pane.getChildren().clear();
-                break;
-        }
+        pane.getChildren().clear();
+        //if picture not found do sth
+        logo=new Image("file:src/main/resources/ryby/"+ryba+".png");
+        pane.getChildren().add(new ImageView(logo));
     }
     public void setChoiceBox() {
+       // WystepowanieBox.setItems(FXCollections.observableArrayList(dh.getOkregi()));
+        wystepowanie=new CustomBox(FXCollections.observableArrayList(dh.getOkregi()));
+        wystepowanie.getItems();
+        Grid.add(wystepowanie,1,0);
         choiceBox.setItems(FXCollections.observableArrayList(dh.getFish()));
         choiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -227,7 +136,6 @@ public class rynekController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         placeCOL.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue()));
         okresyCOL.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue()));
-
     }
 }
 

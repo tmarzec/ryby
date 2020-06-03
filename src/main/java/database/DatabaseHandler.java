@@ -4,6 +4,7 @@ import entities.Polow;
 import entities.Turniej;
 import entities.Wedka;
 import entities.Wedkarz;
+import exceptions.CenaDwaRazy;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,7 @@ public interface DatabaseHandler {
     ArrayList<String> getOkregi();
 
     void addWedka(int wedkarz, Wedka wedka);
+    void addPrice(String fish,Float money) throws CenaDwaRazy;
     Float getActualPrice(String fish);
     Integer getIdFish(String fish);
     Integer getIdZbiornik(String miejsce);
