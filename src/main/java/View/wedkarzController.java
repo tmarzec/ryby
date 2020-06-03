@@ -5,6 +5,8 @@ import entities.Polow;
 import entities.Turniej;
 import entities.Wedka;
 import entities.Wedkarz;
+import exceptions.NoProperRod;
+import exceptions.RodAlrThere;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -52,8 +54,15 @@ public class wedkarzController implements Initializable {
 
     @FXML
     void addWedka(ActionEvent event) {
+        ekwExc.setVisible(false);
         if(materialyCB.getSelectionModel().isEmpty() || rodzajeCB.getSelectionModel().isEmpty()) return;
-        dh.addWedka(wedkarz, new Wedka(rodzajeCB.getSelectionModel().getSelectedItem(),materialyCB.getSelectionModel().getSelectedItem()));
+        try {
+            dh.addWedka(wedkarz, new Wedka(rodzajeCB.getSelectionModel().getSelectedItem(),materialyCB.getSelectionModel().getSelectedItem()));
+        }
+        catch (RodAlrThere e) {
+            ekwExc.setVisible(true);
+            ekwExc.setText(e.getMessage());
+        }
         refresh();//update
     }
 
@@ -83,22 +92,31 @@ public class wedkarzController implements Initializable {
         wedkarz=id;
     }
     public void refresh() {
-        System.out.println(wagaIN.getCharacters());
-
         ArrayList<Wedka> arr = dh.getWedki(wedkarz);
 
         wedki.getItems().setAll(arr);
         materialyCB.getItems().setAll(dh.getMaterialy());
         rodzajeCB.getItems().setAll(dh.getRodzaje());
-        polowy.getItems().setAll(dh.getPolowy(wedkarz, turniejBT.getSelectionModel().getSelectedItem()));
+        //fill polowy
+        ArrayList<Polow> polows = dh.getPolowy(wedkarz, turniejBT.getSelectionModel().getSelectedItem());
+        Float a = 0.f;
+        for(Polow kk: polows) {
+            a+=kk.getPunkty();
+        }
+        sumBT.setText(a.toString());
+        polowy.getItems().setAll(polows);
 
         //String okr = okregIN.getSelectionModel().getSelectedItem();
         //zbiornikIN.getItems().setAll(dh.getZbiorniki(okr));
 
     }
 
+    @FXML
+    private Text warningText;
+
     ArrayList<Turniej> turniejs;
     public void magic() {
+        ekwExc.setVisible(false);
         our = dh.getWedkarz(wedkarz);
         basicInfo.setText("Witaj " + our.getImie() + " " + our.getNazwisko()+"!");
 
@@ -146,8 +164,8 @@ public class wedkarzController implements Initializable {
         });
         zbiornikIN.getItems().setAll(dh.getZbiorniki());
 
-        rybaIN.getItems().setAll(dh.getFish());
 
+        rybaIN.getItems().setAll(dh.getFish());
 
         refresh();
     }
@@ -165,21 +183,53 @@ public class wedkarzController implements Initializable {
     private Button inpPolow;
 
     @FXML
+    private Text ekwExc;
+
+    @FXML
     void insPolow(ActionEvent event) {
+        boolean badInp=false;
+        boolean badWei=false;
+        if(wagaIN.getCharacters().length() == 0 || zbiornikIN.getSelectionModel().getSelectedIndex()==-1 || rybaIN.getSelectionModel().getSelectedIndex()==-1) badInp=true;
+        try {
+            if(!badInp)
+            if(Float.parseFloat(wagaIN.getCharacters().toString())>100.f) badWei=true;
+        }
+        catch (Exception e) {
+            badInp=true;
+        }
+        if(badWei){
+            warningText.setText("zbyt duża waga!");
+            warningText.setVisible(true);
+            return;
+        }
+        if(badInp) {
+            warningText.setText("Bad input");
+            warningText.setVisible(true);
+            return;
+        }
         //add button
         Turniej xd = new Turniej();
         if(turniejON.selectedProperty().get()) {
             xd = turniejIN.getSelectionModel().getSelectedItem();
         }
-        //bad input to waga?
         Polow a = new Polow("", zbiornikIN.getSelectionModel().getSelectedItem(), rybaIN.getSelectionModel().getSelectedItem(),
                 Float.parseFloat(wagaIN.getCharacters().toString()), 0.f);
-        dh.addPolow(our, a, xd);
+        try {
+            dh.addPolow(our, a, xd);
+        }
+        catch (NoProperRod nop) {
+            warningText.setVisible(true);
+            warningText.setText(nop.getMsg());
+            return;
+        }
+        warningText.setVisible(false);
         refresh();
     }
     //@FXML
     //private ChoiceBox<String> okregIN;
 
+    @FXML
+    private Text sumBT;
     @FXML
     private TextField wagaIN;
 

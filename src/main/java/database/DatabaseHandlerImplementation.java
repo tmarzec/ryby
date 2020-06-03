@@ -8,6 +8,8 @@ import entities.Turniej;
 import entities.Wedka;
 import entities.Wedkarz;
 import exceptions.CenaDwaRazy;
+import exceptions.NoProperRod;
+import exceptions.RodAlrThere;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -53,7 +55,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     }
 
     @Override
-    public void addPolow(Wedkarz wedk, Polow xd, Turniej turn) {
+    public void addPolow(Wedkarz wedk, Polow xd, Turniej turn) throws NoProperRod {
         String sql = "insert into projektid.polowy values("+wedk.getKarta()+",now(),"+(turn.isDummy()? null:turn.getId())+","+getIdFish(xd.getRyba())+
                 ','+xd.getWaga()+','+getIdZbiornik(xd.getGdzie())+')';
         System.out.println(sql);
@@ -61,7 +63,8 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             makeUpdate(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            throw new NoProperRod(e);
         }
     }
 
@@ -89,6 +92,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             connect();
             st=conn.createStatement();
             st.executeUpdate(sql);
+            //System.out.println(st.getWarnings().getNextWarning());
         }
     }
     ResultSet getRS(String sql) throws SQLException {
@@ -320,7 +324,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             return res;
         }
         catch (Exception e) {
-
+            e.printStackTrace();
         }
         return false;
     }
@@ -342,13 +346,13 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
 
 
     @Override
-    public void addWedka(int wedkarz, Wedka wedka) {
+    public void addWedka(int wedkarz, Wedka wedka) throws RodAlrThere {
         String sql = "insert into projektid.ekwipunek values("+wedkarz+",'"+wedka.getRodzaj()+"','"+wedka.getMaterial()+"')";
         try {
             makeUpdate(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            throw new RodAlrThere();
         }
     }
 
@@ -366,7 +370,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
 
     @Override
     public ArrayList<Polow> getPolowy(int wedk, Turniej turniej) {
-        String sql="select p.data_polowu, zw.nazwa, r.nazwa, p.waga,p.waga*get_cena(p.ryba, p.data_polowu::date) " +
+        String sql="select p.data_polowu, zw.nazwa, r.nazwa, p.waga,p.waga*get_cena(p.ryba, p.data_polowu::date)::numeric::float8 " +
                 "from projektid.polowy p join projektid.zbiorniki_wodne zw on zw.id_zbiornika=p.id_zbiornika " +
                 "join projektid.ryby r on p.ryba=r.id_ryby where p.wędkarz="+wedk;
         if(!turniej.isDummy()) {
@@ -392,7 +396,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     @Override
     public ArrayList<Turniej> getTurnieje() {
         String sql="select t.id_turnieju, t.data_turnieju, t.rodzaj_konkurencji, zw.nazwa "+
-                "from projektid.turnieje t join projektid.zbiorniki_wodne zw on zw.id_zbiornika=t.miejsce;";
+                "from projektid.turnieje t join projektid.zbiorniki_wodne zw on zw.id_zbiornika=t.miejsce order by 2 desc";
 
         ArrayList<Turniej> arr = new ArrayList<>();
         try {

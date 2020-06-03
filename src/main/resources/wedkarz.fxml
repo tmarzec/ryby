@@ -41,8 +41,8 @@
             <Font size="29.0" />
          </font>
       </Text>
-      <ComboBox fx:id="turniejBT" layoutX="386.0" layoutY="386.0" prefWidth="150.0" />
-      <Text layoutX="386.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="turniej:" />
+      <ComboBox fx:id="turniejBT" layoutX="636.0" layoutY="100.0" prefWidth="150.0" />
+      <Text layoutX="749.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="turniej:" />
       <CheckBox fx:id="turniejON" layoutX="171.0" layoutY="426.0" mnemonicParsing="false" onAction="#showHide" prefHeight="16.0" prefWidth="68.0" selected="true" text="turniej" />
       <ChoiceBox fx:id="turniejIN" layoutX="96.0" layoutY="456.0" prefWidth="150.0" />
       <ChoiceBox fx:id="zbiornikIN" layoutX="254.0" layoutY="456.0" prefWidth="150.0" />
@@ -51,6 +51,13 @@
       <Text layoutX="411.0" layoutY="439.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ryba" />
       <TextField fx:id="wagaIN" layoutX="560.0" layoutY="457.0" prefHeight="16.0" prefWidth="55.0" />
       <Text layoutX="560.0" layoutY="439.0" strokeType="OUTSIDE" strokeWidth="0.0" text="waga" />
-      <Button fx:id="inpPolow" layoutX="683.0" layoutY="438.0" mnemonicParsing="false" onAction="#insPolow" prefHeight="39.0" prefWidth="55.0" text="dodaj" />
+      <Button fx:id="inpPolow" layoutX="626.0" layoutY="446.0" mnemonicParsing="false" onAction="#insPolow" prefHeight="39.0" prefWidth="55.0" text="dodaj" />
+      <Text fx:id="sumBT" layoutX="727.0" layoutY="376.0" strokeType="OUTSIDE" strokeWidth="0.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fx:id="warningText" fill="#ee0909" layoutX="615.0" layoutY="421.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="150.0" />
+      <Text fx:id="ekwExc" fill="#dd0f0f" layoutX="209.0" layoutY="404.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="90.0" />
    </children>
 </Pane>

@@ -5,6 +5,8 @@ import entities.Turniej;
 import entities.Wedka;
 import entities.Wedkarz;
 import exceptions.CenaDwaRazy;
+import exceptions.NoProperRod;
+import exceptions.RodAlrThere;
 
 import java.util.ArrayList;
 
@@ -26,7 +28,7 @@ public interface DatabaseHandler {
     ArrayList<String> getMaterialy();
     ArrayList<String> getOkregi();
 
-    void addWedka(int wedkarz, Wedka wedka);
+    void addWedka(int wedkarz, Wedka wedka) throws RodAlrThere;
     void addPrice(String fish,Float money) throws CenaDwaRazy;
     Float getActualPrice(String fish);
     Integer getIdFish(String fish);
@@ -35,5 +37,5 @@ public interface DatabaseHandler {
     ArrayList<Turniej> getTurnieje();
     ArrayList<Turniej> getAktTurnieje();
 
-    void addPolow(Wedkarz wedk, Polow xd, Turniej turn);
+    void addPolow(Wedkarz wedk, Polow xd, Turniej turn) throws NoProperRod;
 }
