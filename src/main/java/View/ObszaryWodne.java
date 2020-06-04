@@ -43,6 +43,7 @@ public class ObszaryWodne implements Initializable {
         Label text;
         CustomItem(Okreg to) {
             super(5);
+            treeView.getSelectionModel().select(-1);
             Button btn = new Button("+");
             btn.setStyle("-fx-font-size: 13; -fx-alignment: center-right; -fx-fit-to-width: inherit");
             btn.setScaleX(0.8);
@@ -79,8 +80,21 @@ public class ObszaryWodne implements Initializable {
     private Text warningField;
 
     Okreg curOkr;
+    void safeReload() {
+        ArrayList<Boolean> exp = new ArrayList<>();
+        for(TreeItem<CustomItem> ob: treeView.getRoot().getChildren()) {
+            exp.add(ob.isExpanded());
+        }
+        doMagic();
+        for(int i = 0; i < exp.size(); i++) {
+            treeView.getRoot().getChildren().get(i).setExpanded(exp.get(i));
+        }
+    }
     @FXML
     void addOA(ActionEvent event) {
+        newName.setVisible(false);
+        nameBT.setVisible(false);
+        newName.setText("");
         try {
             Float.parseFloat(powierzchniaIN.getText());
         }
@@ -98,29 +112,53 @@ public class ObszaryWodne implements Initializable {
             return;
         }
         warningField.setVisible(false);
-        ArrayList<Boolean> exp = new ArrayList<>();
-        for(TreeItem<CustomItem> ob: treeView.getRoot().getChildren()) {
-            exp.add(ob.isExpanded());
-        }
-        doMagic();
-        for(int i = 0; i < exp.size(); i++) {
-            treeView.getRoot().getChildren().get(i).setExpanded(exp.get(i));
-        }
+        safeReload();
     }
     //part with name
     @FXML
     private TextField newName;
 
     @FXML
-    private Button nameFLD;
+    private Button nameBT;
 
     @FXML
     void updateName(ActionEvent event) {
+        String what = treeView.getSelectionModel().getSelectedItem().getValue().getZbiornik();//real
+        Okreg okreg = treeView.getSelectionModel().getSelectedItem().getParent().getValue().getOkreg();
 
+        String name= newName.getText();
+
+        try {
+            dh.updateZbiornik(okreg, what, name);
+        } catch (OkragZbiornik okragZbiornik) {
+            warningField.setText(okragZbiornik.getMessage());
+            warningField.setVisible(true);
+            return;
+        }
+        safeReload();
+        newName.setVisible(false);
+        nameBT.setVisible(false);
+
+        warningField.setVisible(false);
+    }
+    @FXML
+    void treeClick(MouseEvent event) {
+        TreeItem<CustomItem> aa = treeView.getSelectionModel().getSelectedItem();
+        if(aa==null || aa.getValue().isOkrag()) {
+            newName.setVisible(false);
+            nameBT.setVisible(false);
+            newName.setText("");
+            return;
+        }
+        newName.setText("");
+        newName.setVisible(true);
+        nameBT.setVisible(true);
     }
 
     //click on + buttn
     void handleClick(Okreg okrag) {
+        newName.setVisible(false);
+        nameBT.setVisible(false);
         welcomeBT.setText("Dodaj zbiornik do "+okrag);
         welcomeBT.setVisible(true);
         addBT.setVisible(true);
@@ -129,7 +167,10 @@ public class ObszaryWodne implements Initializable {
         curOkr=okrag;
     }
 
+
+
     ArrayList<Okreg> holder = new ArrayList<>();
+
 
 
     @FXML
@@ -182,6 +223,9 @@ public class ObszaryWodne implements Initializable {
         addBT.setVisible(false);
         powierzchniaIN.setVisible(false);
         warningField.setVisible(false);
+
+        newName.setVisible(false);
+        nameBT.setVisible(false);
 
         treeView.setStyle("-fx-font-size: 15");
         //treeView.setCellFactory(((TreeView<String> t) ->new TeXt));

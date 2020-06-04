@@ -36,8 +36,18 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
 
     @Override
     public void addZbiornik(Okreg okreg, String name, Float pow) throws OkragZbiornik {
-        String sql = "insert into projektid.zbiorniki_wodne(nazwa, powierzchnia, okrąg) values" +
+        String sql = "insert into projektid.zbiorniki_wodne(nazwa, powierzchnia, okręg) values" +
         "('"+name+"',"+pow+",'"+okreg.toString()+"')";
+        try {
+            makeUpdate(sql);
+        } catch (Exception e) {
+            throw new OkragZbiornik();
+        }
+    }
+
+    @Override
+    public void updateZbiornik(Okreg okreg, String old, String neww) throws OkragZbiornik {
+        String sql = "update projektid.zbiorniki_wodne set nazwa='"+neww+"' where nazwa='"+old+"' and okręg='"+okreg.toString()+"'";
         try {
             makeUpdate(sql);
         } catch (Exception e) {
@@ -216,7 +226,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     @Override
     public ArrayList<String> getZbiorniki() {
         ArrayList<String> arr = new ArrayList<>();
-        String sql = "select nazwa from projektid.zbiorniki_wodne";
+        String sql = "select nazwa from projektid.zbiorniki_wodne order by 1";
         try {
             ResultSet rs=getRS(sql);
 
@@ -234,7 +244,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     @Override
     public ArrayList<String> getZbiorniki(String okrag) {
         ArrayList<String> arr = new ArrayList<>();
-        String sql = "select nazwa from projektid.zbiorniki_wodne where okrąg="+"'"+okrag+"'";
+        String sql = "select nazwa from projektid.zbiorniki_wodne where okręg="+"'"+okrag+"'";
         try {
             ResultSet rs=getRS(sql);
             while (rs.next()) {
@@ -473,7 +483,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     @Override
     public ArrayList<String> getOkregi() {
         ArrayList<String> arr=new ArrayList<>();
-        String sql = "select unnest(enum_range(NULL::okrag))";
+        String sql = "select unnest(enum_range(NULL::okreg))";
         arr= getStrings(arr, sql);
         arr.forEach(String::toLowerCase);
         return arr;

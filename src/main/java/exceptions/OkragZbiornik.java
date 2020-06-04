@@ -2,6 +2,10 @@ package exceptions;
 
 public class OkragZbiornik extends Exception{
     public OkragZbiornik() {
-        super(new Exception("Ten okrąg ma już ten zbiornik"));
+    }
+
+    @Override
+    public String getMessage() {
+        return "Ten okręg ma już ten zbiornik!";
     }
 }

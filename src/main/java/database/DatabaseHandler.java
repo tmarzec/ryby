@@ -38,5 +38,5 @@ public interface DatabaseHandler {
     void addPolow(Wedkarz wedk, Polow xd, Turniej turn) throws NoProperRod;
 
     void addZbiornik(Okreg okreg, String name, Float pow) throws OkragZbiornik;
-
+    void updateZbiornik(Okreg okreg, String old, String neww) throws OkragZbiornik;
 }
