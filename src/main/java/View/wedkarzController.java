@@ -9,15 +9,18 @@ import exceptions.NoProperRod;
 import exceptions.RodAlrThere;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import tools.CustomBox;
 
 import java.net.URL;
 import java.sql.Timestamp;
@@ -110,7 +113,7 @@ public class wedkarzController implements Initializable {
         //zbiornikIN.getItems().setAll(dh.getZbiorniki(okr));
 
     }
-
+    CustomBox okregBox;
     @FXML
     private Text warningText;
 
@@ -145,6 +148,7 @@ public class wedkarzController implements Initializable {
         turniejIN.setOnAction(new EventHandler<ActionEvent>() {//setting miejsce when its disabled
             @Override
             public void handle(ActionEvent actionEvent) {
+                okregBox.getSelectionModel().select(turniejIN.getSelectionModel().getSelectedItem().getPzw());
                 zbiornikIN.getSelectionModel().select(turniejIN.getSelectionModel().getSelectedItem().getMiejsce());
             }
         });
@@ -164,9 +168,19 @@ public class wedkarzController implements Initializable {
         });
         zbiornikIN.getItems().setAll(dh.getZbiorniki());
 
+        okregBox = new CustomBox(FXCollections.observableList(dh.getOkregi()));
 
+        okregBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {//when pzw changed
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                zbiornikIN.getItems().setAll(dh.getZbiorniki(okregBox.getSelectionModel().getSelectedItem()));
+                if(zbiornikIN.getSelectionModel().isEmpty()) zbiornikIN.getSelectionModel().select(0);
+            }
+        });
+        placeHolder.getChildren().add(0, okregBox);
         rybaIN.getItems().setAll(dh.getFish());
 
+        okregBox.getSelectionModel().select(0);
         refresh();
     }
     //public void setStage(Stage stage){
@@ -181,7 +195,8 @@ public class wedkarzController implements Initializable {
 
     @FXML
     private Button inpPolow;
-
+    @FXML
+    private GridPane placeHolder;
     @FXML
     private Text ekwExc;
 
@@ -245,11 +260,13 @@ public class wedkarzController implements Initializable {
         boolean enable = !disable;
         turniejIN.setDisable(disable);
         if(enable) {
+            okregBox.getSelectionModel().select(turniejIN.getSelectionModel().getSelectedItem().getPzw());
             zbiornikIN.getSelectionModel().select(turniejIN.getSelectionModel().getSelectedItem().getMiejsce());
-            zbiornikIN.setDisable(true);
+
+            placeHolder.setDisable(true);
         }
         else {
-            zbiornikIN.setDisable(false);
+            placeHolder.setDisable(false);
         }
     }
 

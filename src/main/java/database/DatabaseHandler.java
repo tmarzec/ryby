@@ -30,6 +30,8 @@ public interface DatabaseHandler {
     ArrayList<String> getMaterialy();
     ArrayList<String> getOkregi();
 
+    String getOkreg(String zbiornik);
+
     void addWedka(int wedkarz, Wedka wedka) throws RodAlrThere;
     void addPrice(String fish,Float money) throws CenaDwaRazy;
     void addWystepowanie(String fish, String zbiornik) throws ParaRybaZbiornikJest;

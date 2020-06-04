@@ -7,6 +7,12 @@ public class Turniej {
     String miejsce;
     Date data;
     String rodzaj;
+    String pzw;
+
+    public String getPzw() {
+        return pzw;
+    }
+
     public String getMiejsce() {
         return miejsce;
     }
@@ -20,11 +26,12 @@ public class Turniej {
     }
 
     int id;
-    public Turniej(int id, String miejsce, Date data, String rodzaj) {
+    public Turniej(int id, String miejsce, Date data, String rodzaj, String pzw) {
         this.miejsce = miejsce;
         this.data = data;
         this.id=id;
         this.rodzaj=rodzaj;
+        this.pzw=pzw;
     }
     public Turniej() {
         dummy=true;

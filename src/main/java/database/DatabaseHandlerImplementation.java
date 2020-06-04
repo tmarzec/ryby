@@ -154,6 +154,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         ArrayList<String>res=new ArrayList<>();
         String sql = "select r.nazwa from projektid.ryby r join projektid.wystepowanie_ryb wr on wr.ryba=r.id_ryby "+
                 "join projektid.zbiorniki_wodne  zw on zw.id_zbiornika=wr.zbiornik where zw.nazwa='"+miejsce+"'";
+        System.out.println(sql);
         getStrings(res, sql);
         return res;
     }
@@ -204,6 +205,12 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         }
 
         return arr;
+    }
+
+    @Override
+    public String getOkreg(String zbiornik) {
+        String sql = "select ";
+        return null;
     }
 
     @Override
@@ -407,9 +414,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
 
     @Override
     public ArrayList<Polow> getPolowy(int wedk, Turniej turniej) {
-        String sql="select p.data_polowu, zw.nazwa, r.nazwa, p.waga,p.waga*get_cena(p.ryba, p.data_polowu::date)::numeric::float8 " +
-                "from projektid.polowy p join projektid.zbiorniki_wodne zw on zw.id_zbiornika=p.id_zbiornika " +
-                "join projektid.ryby r on p.ryba=r.id_ryby where p.wędkarz="+wedk;
+        String sql="select * from projektid.get_polowy where wędkarz="+wedk;
         if(!turniej.isDummy()) {
             sql+=" and id_turnieju="+turniej.getId();
         }
@@ -421,7 +426,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             while(rs.next()) {
                 Timestamp a = rs.getTimestamp("data_polowu");
                 String timeStamp = new SimpleDateFormat("yyyy.MM.dd HH.mm.ss").format(a);
-                arr.add(new Polow(timeStamp, rs.getString(2), rs.getString(3), rs.getFloat(4), rs.getFloat(5)));
+                arr.add(new Polow(timeStamp, rs.getString(4), rs.getString(5), rs.getFloat(6), rs.getFloat(7)));
             }
         }
         catch (Exception e) {
@@ -432,15 +437,14 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
 
     @Override
     public ArrayList<Turniej> getTurnieje() {
-        String sql="select t.id_turnieju, t.data_turnieju, t.rodzaj_konkurencji, zw.nazwa "+
-                "from projektid.turnieje t join projektid.zbiorniki_wodne zw on zw.id_zbiornika=t.miejsce order by 2 desc";
+        String sql="select * from get_turnieje order by 2 desc";
 
         ArrayList<Turniej> arr = new ArrayList<>();
         try {
             ResultSet rs=getRS(sql);
 
             while(rs.next()) {
-                arr.add(new Turniej(rs.getInt(1), rs.getString(4), rs.getDate(2), rs.getString(3)));
+                arr.add(new Turniej(rs.getInt(1), rs.getString(4), rs.getDate(2), rs.getString(3), rs.getString(5)));
             }
         }
         catch (Exception e) {
@@ -451,15 +455,14 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
 
     @Override
     public ArrayList<Turniej> getAktTurnieje() {
-        String sql="select t.id_turnieju, t.data_turnieju, t.rodzaj_konkurencji, zw.nazwa "+
-                "from projektid.turnieje t join projektid.zbiorniki_wodne zw on zw.id_zbiornika=t.miejsce where t.data_turnieju=now()::date";
+        String sql="select * from get_turnieje where data_turnieju=now()::date";
 
         ArrayList<Turniej> arr = new ArrayList<>();
         try {
             ResultSet rs=getRS(sql);
 
             while(rs.next()) {
-                arr.add(new Turniej(rs.getInt(1), rs.getString(4), rs.getDate(2), rs.getString(3)));
+                arr.add(new Turniej(rs.getInt(1), rs.getString(4), rs.getDate(2), rs.getString(3), rs.getString(5)));
             }
         }
         catch (Exception e) {
