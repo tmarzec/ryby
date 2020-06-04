@@ -100,7 +100,7 @@ public class ObszaryWodne implements Initializable {
         }
         catch (Exception e) {
             warningField.setVisible(true);
-            warningField.setText("Zły input");
+            warningField.setText("Złe dane");
             return;
         }
         try {
@@ -127,7 +127,7 @@ public class ObszaryWodne implements Initializable {
         Okreg okreg = treeView.getSelectionModel().getSelectedItem().getParent().getValue().getOkreg();
 
         String name= newName.getText();
-
+        if(name.length()==0) return;
         try {
             dh.updateZbiornik(okreg, what, name);
         } catch (OkragZbiornik okragZbiornik) {
@@ -228,7 +228,5 @@ public class ObszaryWodne implements Initializable {
         nameBT.setVisible(false);
 
         treeView.setStyle("-fx-font-size: 15");
-        //treeView.setCellFactory(((TreeView<String> t) ->new TeXt));
-        treeView.selectionModelProperty().addListener((v , oldVal, newVal) -> System.out.println(oldVal));
     }
 }

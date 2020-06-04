@@ -35,6 +35,25 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     }
 
     @Override
+    public void insertWedkarz(Wedkarz ne, int starosta) throws IdIstnieje, ZaMlody {
+        String sql1="select exists(select * from projektid.wędkarze where karta_rybacka="+ne.getKarta()+")";
+        try {
+            ResultSet rs = getRS(sql1);
+            rs.next();
+            if(rs.getBoolean(1)) throw new SQLException();
+        } catch (SQLException throwables) {
+            throw new IdIstnieje();
+        }
+        sql1="insert into projektid.wędkarze values("+ne.getKarta()+",'"+ne.getImie()+"','"+ne.getNazwisko()+"','"+ne.getDataUrodzenia()+"',now()::date,"+starosta+")";
+        System.out.println(sql1);
+        try {
+            makeUpdate(sql1);
+        } catch (Exception e) {
+            throw new ZaMlody();
+        }
+    }
+
+    @Override
     public void addZbiornik(Okreg okreg, String name, Float pow) throws OkragZbiornik {
         String sql = "insert into projektid.zbiorniki_wodne(nazwa, powierzchnia, okręg) values" +
         "('"+name+"',"+pow+",'"+okreg.toString()+"')";
@@ -100,6 +119,21 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         catch (Exception e) {
            e.printStackTrace();
         }
+    }
+
+    @Override
+    public ArrayList<Starosta> getStarosciAkt() {
+        ArrayList<Starosta> arr = new ArrayList<>();
+        String sql = "select * from projektid.starosci_online()";
+        try {
+            ResultSet rs = getRS(sql);
+            while(rs.next()) {
+                arr.add(new Starosta(rs.getInt(1), rs.getString("imie"), rs.getString("nazwisko"), rs.getString("miasto")));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return arr;
     }
 
     @Override

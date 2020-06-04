@@ -65,6 +65,7 @@ public class MenuWindow extends Stage {
         wedkarzController =wedkarzLoader.getController();
         wedkarzController.setDB(dh);
         wedkarzController.setStage(wedkarzStage);
+        wedkarzStage.setResizable(false);
         wedkarzStage.show();
     }
 
@@ -87,7 +88,7 @@ public class MenuWindow extends Stage {
 
         sekretarzController.setDB(dh);
         sekretarzController.doMagic();
-
+        sekretarzStage.setResizable(false);
         sekretarzStage.show();
     }
 

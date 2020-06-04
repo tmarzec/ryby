@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public interface DatabaseHandler {
     void connect();
+    ArrayList<Starosta> getStarosciAkt();
     ArrayList<String> getFish();
     ArrayList<String> getFish(String miejsce);
     ArrayList<Wedka> getWedki(int rybak);
@@ -18,6 +19,7 @@ public interface DatabaseHandler {
     ArrayList<String> getOkresy(String fish);
     ArrayList<String> getPlaces(String fish);
     Wedkarz getWedkarz(int id);
+    void insertWedkarz(Wedkarz ne, int starosta)throws IdIstnieje, ZaMlody;
     boolean existsWedk(int wk);
     ArrayList<String> getRodzaje();
     ArrayList<String> getMaterialy();
