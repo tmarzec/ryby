@@ -1,14 +1,7 @@
 package database;
 
-import entities.Polow;
-import entities.Turniej;
-import entities.Wedka;
-import entities.Wedkarz;
-import exceptions.CenaDwaRazy;
-import exceptions.ParaRybaZbiornikJest;
-import exceptions.ZlyOkres;
-import exceptions.NoProperRod;
-import exceptions.RodAlrThere;
+import entities.*;
+import exceptions.*;
 
 import java.util.ArrayList;
 
@@ -43,4 +36,7 @@ public interface DatabaseHandler {
     ArrayList<Turniej> getAktTurnieje();
     void addOkres(String fish,String text) throws ZlyOkres;
     void addPolow(Wedkarz wedk, Polow xd, Turniej turn) throws NoProperRod;
+
+    void addZbiornik(Okreg okreg, String name, Float pow) throws OkragZbiornik;
+
 }

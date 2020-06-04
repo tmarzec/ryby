@@ -78,7 +78,16 @@ public class MenuWindow extends Stage {
     }
 
     @FXML
-    public void sekretarzWejdz(MouseEvent event) {
+    public void sekretarzWejdz(MouseEvent event) throws IOException {
+        sekretarzLoader = new FXMLLoader(getClass().getClassLoader().getResource("sekretarz.fxml"));
+        sekretarzPane = sekretarzLoader.load();
+        sekretarzStage=new Stage();
+        sekretarzStage.setScene(new Scene(sekretarzPane));
+        sekretarzController = sekretarzLoader.getController();
+
+        sekretarzController.setDB(dh);
+        sekretarzController.doMagic();
+
         sekretarzStage.show();
     }
 
@@ -112,7 +121,7 @@ public class MenuWindow extends Stage {
     Stage rynekStage;
 
     FXMLLoader sekretarzLoader = null;
-    // wedkarzController controller=null;
+    sekretarzController sekretarzController=null;
     Pane sekretarzPane;
     Stage sekretarzStage;
 
@@ -126,10 +135,7 @@ public class MenuWindow extends Stage {
     }
     @FXML
     public void initialize() throws IOException {
-        sekretarzLoader = new FXMLLoader(getClass().getClassLoader().getResource("sekretarz.fxml"));
-        sekretarzPane = sekretarzLoader.load();
-        sekretarzStage=new Stage();
-        sekretarzStage.setScene(new Scene(sekretarzPane));
+
 
         turniejLoader = new FXMLLoader(getClass().getClassLoader().getResource("turniej.fxml"));
         turniejPane = turniejLoader.load();

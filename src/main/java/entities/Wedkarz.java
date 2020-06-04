@@ -1,5 +1,6 @@
 package entities;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 
@@ -18,19 +19,19 @@ public class Wedkarz {
         return nazwisko;
     }
 
-    public Timestamp getDataUrodzenia() {
+    public Date getDataUrodzenia() {
         return dataUrodzenia;
     }
 
-    public Timestamp getDataWydania() {
+    public Date getDataWydania() {
         return dataWydania;
     }
 
     String imie;
     String nazwisko;
-    Timestamp dataUrodzenia;
-    Timestamp dataWydania;
-    public Wedkarz(Integer karta, String imie, String nazwisko, Timestamp du, Timestamp dw) {
+    Date dataUrodzenia;
+    Date dataWydania;
+    public Wedkarz(Integer karta, String imie, String nazwisko, Date du, Date dw) {
         this.karta=karta;
         this.imie=imie;
         this.nazwisko=nazwisko;

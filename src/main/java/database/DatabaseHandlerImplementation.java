@@ -1,17 +1,10 @@
 package database;
 
 
-import entities.Polow;
-import entities.Turniej;
+import entities.*;
 
 
-import entities.Wedka;
-import entities.Wedkarz;
-import exceptions.CenaDwaRazy;
-import exceptions.ParaRybaZbiornikJest;
-import exceptions.ZlyOkres;
-import exceptions.NoProperRod;
-import exceptions.RodAlrThere;
+import exceptions.*;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -28,7 +21,6 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             Class.forName("org.postgresql.Driver");
             System.out.println("conn");
             //DriverManager.setLoginTimeout(1<<31);
-
              pro.put("user", "postgres");
              pro.put("password", "morszczukgora");
              pro.put("autoReconnect", "true");
@@ -39,6 +31,17 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         }
         catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addZbiornik(Okreg okreg, String name, Float pow) throws OkragZbiornik {
+        String sql = "insert into projektid.zbiorniki_wodne(nazwa, powierzchnia, okrąg) values" +
+        "('"+name+"',"+pow+",'"+okreg.toString()+"')";
+        try {
+            makeUpdate(sql);
+        } catch (Exception e) {
+            throw new OkragZbiornik();
         }
     }
 
@@ -60,7 +63,6 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     public void addPolow(Wedkarz wedk, Polow xd, Turniej turn) throws NoProperRod {
         String sql = "insert into projektid.polowy values("+wedk.getKarta()+",now(),"+(turn.isDummy()? null:turn.getId())+","+getIdFish(xd.getRyba())+
                 ','+xd.getWaga()+','+getIdZbiornik(xd.getGdzie())+')';
-        System.out.println(sql);
         try {
             makeUpdate(sql);
         }
@@ -82,7 +84,6 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             if(k!='-' && !where) b+=k;
         }
         String sql = "insert into projektid.okresy_ochronne values("+id+","+a+","+b+")";
-        System.out.println(sql);
         try {
             makeUpdate(sql);
         }
@@ -154,7 +155,6 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         ArrayList<String>res=new ArrayList<>();
         String sql = "select r.nazwa from projektid.ryby r join projektid.wystepowanie_ryb wr on wr.ryba=r.id_ryby "+
                 "join projektid.zbiorniki_wodne  zw on zw.id_zbiornika=wr.zbiornik where zw.nazwa='"+miejsce+"'";
-        System.out.println(sql);
         getStrings(res, sql);
         return res;
     }
@@ -198,7 +198,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             ResultSet rs=getRS(sql);
 
             while (rs.next()) {
-                arr.add(new Wedkarz(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4), rs.getTimestamp(5)));
+                arr.add(new Wedkarz(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5)));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -306,8 +306,8 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        for(String a: arr)
-            System.out.println(a);
+        //for(String a: arr)
+        //   System.out.println(a);
         return arr;
     }
 
@@ -335,7 +335,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             ResultSet rs=getRS(sql);
 
             rs.next();
-            return new Wedkarz(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4), rs.getTimestamp(5));
+            return new Wedkarz(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -351,7 +351,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
 
             rs.next();
             boolean res = rs.getBoolean(1);
-            System.out.println(res);
+            //System.out.println(res);
             return res;
         }
         catch (Exception e) {
