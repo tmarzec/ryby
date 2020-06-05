@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MenuWindow">
+   <children>
+      <HBox layoutX="314.0" layoutY="200.0" prefHeight="500.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox prefHeight="500.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="100.0" prefWidth="200.0" text="Wędkarz">
+                     <font>
+                        <Font name="System Bold" size="32.0" />
+                     </font>
+                  </Label>
+                  <Pane fx:id="wedkarzTab" onMouseClicked="#WedkarzWejdz" onMouseEntered="#wedkarzTabJasny" onMouseExited="#wedkarzTabCiemny" prefHeight="400.0" prefWidth="200.0" />
+               </children>
+            </VBox>
+            <VBox prefHeight="500.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="100.0" prefWidth="200.0" text="Sekretarz">
+                     <font>
+                        <Font name="System Bold" size="32.0" />
+                     </font>
+                  </Label>
+                  <Pane fx:id="sekretarzTab" onMouseClicked="#sekretarzWejdz" onMouseEntered="#sekretarzTabJasny" onMouseExited="#sekretarzTAbCiemny" prefHeight="400.0" prefWidth="200.0" />
+               </children>
+            </VBox>
+            <VBox prefHeight="500.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="100.0" prefWidth="200.0" text="Turnieje">
+                     <font>
+                        <Font name="System Bold" size="32.0" />
+                     </font>
+                  </Label>
+                  <Pane fx:id="turniejTab" onMouseClicked="#TurniejWejdz" onMouseEntered="#turniejJasny" onMouseExited="#turniejCiemny" prefHeight="400.0" prefWidth="200.0" />
+               </children>
+            </VBox>
+            <VBox prefHeight="500.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="100.0" prefWidth="200.0" text="Rynek">
+                     <font>
+                        <Font name="System Bold" size="32.0" />
+                     </font>
+                  </Label>
+                  <Pane fx:id="RynekTab" onMouseClicked="#RynekWejdz" onMouseEntered="#RynekJasny" onMouseExited="#RynekCiemny" prefHeight="400.0" prefWidth="200.0" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

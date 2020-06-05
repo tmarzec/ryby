@@ -22,7 +22,7 @@ public class StartMenu extends Application {
         DatabaseHandler db = new DatabaseHandlerImplementation();
         db.connect();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("main.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("test.fxml"));
         Pane root = loader.load();
         Scene scene = new Scene(root, 800, 400);
         stage.setScene(scene);

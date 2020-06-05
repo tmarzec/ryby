@@ -26,8 +26,8 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Text>
-      <Button layoutX="376.0" layoutY="354.0" mnemonicParsing="false" onAction="#dodajWedkarza" prefHeight="51.0" prefWidth="131.0" text="dodaj wędkarza" />
-      <Button fx:id="zmienBT" layoutX="237.0" layoutY="354.0" mnemonicParsing="false" onAction="#zmienWedk" prefHeight="51.0" prefWidth="95.0" text="zmień" />
+      <Button layoutX="592.0" layoutY="354.0" mnemonicParsing="false" onAction="#dodajWedkarza" prefHeight="51.0" prefWidth="131.0" text="dodaj wędkarza" />
+      <Button fx:id="zmienBT" layoutX="524.0" layoutY="282.0" mnemonicParsing="false" onAction="#zmienWedk" prefHeight="51.0" prefWidth="95.0" text="zmień" />
       <Button fx:id="obszaryBT" layoutX="576.0" layoutY="52.0" mnemonicParsing="false" onAction="#openObszary" prefHeight="76.0" prefWidth="95.0" text="Obszary wodne" textAlignment="CENTER" wrapText="true">
          <font>
             <Font name="System Bold" size="15.0" />
@@ -37,12 +37,17 @@
       <TextField fx:id="imieTF" layoutX="180.0" layoutY="454.0" prefHeight="16.0" prefWidth="116.0" />
       <TextField fx:id="nazwTF" layoutX="321.0" layoutY="454.0" />
       <DatePicker fx:id="urodzD" layoutX="476.0" layoutY="454.0" prefHeight="16.0" prefWidth="95.0" />
-      <ChoiceBox fx:id="starostaCB" layoutX="592.0" layoutY="454.0" prefHeight="16.0" prefWidth="110.0" />
+      <ChoiceBox fx:id="starostaCB" layoutX="592.0" layoutY="454.0" prefHeight="16.0" prefWidth="148.0" />
       <Text layoutX="62.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="nr karty" />
       <Text layoutX="180.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="imie" />
       <Text layoutX="321.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="nazwisko" />
       <Text layoutX="476.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="urodziny" />
       <Text layoutX="592.0" layoutY="441.0" strokeType="OUTSIDE" strokeWidth="0.0" text="starosta" />
-      <Text fx:id="warningBox" fill="#fd1d1d" layoutX="579.0" layoutY="384.0" strokeType="OUTSIDE" strokeWidth="0.0" text="błąd!" />
+      <Text fx:id="warningBox" fill="#fd1d1d" layoutX="571.0" layoutY="497.0" strokeType="OUTSIDE" strokeWidth="0.0" text="błąd!" />
+      <Button fx:id="obszaryBT1" layoutX="576.0" layoutY="144.0" mnemonicParsing="false" onAction="#openStarosci" prefHeight="76.0" prefWidth="95.0" text="Starości" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Button>
    </children>
 </Pane>

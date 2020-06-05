@@ -20,12 +20,13 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         try {
             Class.forName("org.postgresql.Driver");
             System.out.println("conn");
-            //DriverManager.setLoginTimeout(1<<31);
-             pro.put("user", "postgres");
-             pro.put("password", "morszczukgora");
-             pro.put("autoReconnect", "true");
+            DriverManager.setLoginTimeout(1<<31);
+            pro.put("user", "postgres");
+            pro.put("password", "morszczukgora");
+            //pro.put("password", "123456789");
+            pro.put("autoReconnect", "true");
             conn=DriverManager.getConnection("jdbc:postgresql://40.85.112.201:5432/database", pro);
-
+            //conn=DriverManager.getConnection("jdbc:postgresql://13.79.145.88:5432/ryby", pro);
 
             System.out.println("successfully connected");
         }

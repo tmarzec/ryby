@@ -150,6 +150,12 @@ public class ObszaryWodne implements Initializable {
             newName.setText("");
             return;
         }
+        //hide + btn
+        welcomeBT.setVisible(false);
+        addBT.setVisible(false);
+        addBT.setVisible(false);
+        nameIN.setVisible(false);
+        powierzchniaIN.setVisible(false);
         newName.setText("");
         newName.setVisible(true);
         nameBT.setVisible(true);

@@ -100,6 +100,21 @@ public class sekretarzController implements Initializable {
         starostaCB.getItems().setAll(dh.getStarosciAkt());
     }
 
+
+    @FXML
+    void openStarosci(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("StarosciWindow.fxml"));
+        Stage stage=new Stage();
+        stage.setScene(new Scene(loader.load()));
+
+        StarosciWindow obsz = loader.getController();
+        obsz.setDb(dh);
+        obsz.setMe(stage);
+        obsz.doMagic();
+        stage.setResizable(false);
+        stage.show();
+    }
+
     @FXML
     private Button zmienBT;
 
