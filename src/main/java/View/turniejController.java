@@ -86,12 +86,44 @@ public class turniejController implements Initializable {
     @FXML
     void generateCytat(ActionEvent event) {
         Random rand = new Random();
-        int id=1;
-        //int id =rand.nextInt(15);
+        int id;
+        id =rand.nextInt(9);
         switch (id){
             case 1:
                 Cytaty.setText("„Nie ma ryby bez ości i człowieka bez wad.”");
                 Autor.setText("przysłowie norweskie");
+                break;
+            case 2:
+                Cytaty.setText("„Człowiek bez swobody jak ryba bez wody.”");
+                Autor.setText("przysłowie polskie");
+                break;
+            case 3:
+                Cytaty.setText("„Machaj wędą – ryby będą.”");
+                Autor.setText("autor nieznany");
+                break;
+            case 4:
+                Cytaty.setText("„Jak ryby na wędkę, tak ludzi łowią na grzeczność.”");
+                Autor.setText("przysłowie polskie");
+                break;
+            case 5:
+                Cytaty.setText("„Ryba widzi nie haczyk, a przynętę.”");
+                Autor.setText("przysłowie rosyjskie");
+                break;
+            case 6:
+                Cytaty.setText("„Gdyby ptak kochał rybę, gdzie mogliby zamieszkać?.”");
+                Autor.setText("Donya Al-Nahi");
+                break;
+            case 7:
+                Cytaty.setText("Leszcz bierze w deszcz.");
+                Autor.setText("autor nieznany");
+                break;
+            case 8:
+                Cytaty.setText("„Mówią, że wędkarstwo to sztuka cierpliwości”");
+                Autor.setText("Edward Michael Grylls");
+                break;
+            case 9:
+                Cytaty.setText("„Ryba psuje się od głowy, a człowiek od serca.”");
+                Autor.setText("Mariusz Fiedorek");
                 break;
         }
 
@@ -106,8 +138,8 @@ public class turniejController implements Initializable {
             } catch (TurniejIstnieje e) {
                InofLab.setText("Taki turniej już istnieje!");
             }
-
         }
+        refresh();
     }
     public void refresh(){
         String miejsce=zbiorniki.getValue();
