@@ -170,12 +170,10 @@ public class wedkarzController implements Initializable {
 
         okregBox = new CustomBox(FXCollections.observableList(dh.getOkregi()));
 
-        okregBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {//when pzw changed
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                zbiornikIN.getItems().setAll(dh.getZbiorniki(okregBox.getSelectionModel().getSelectedItem()));
-                if(zbiornikIN.getSelectionModel().isEmpty()) zbiornikIN.getSelectionModel().select(0);
-            }
+        //when pzw changed
+        okregBox.getSelectionModel().selectedIndexProperty().addListener((observableValue, number, t1) -> {
+            zbiornikIN.getItems().setAll(dh.getZbiorniki(okregBox.getSelectionModel().getSelectedItem()));
+            if(zbiornikIN.getSelectionModel().isEmpty()) zbiornikIN.getSelectionModel().select(0);
         });
         placeHolder.getChildren().add(0, okregBox);
         rybaIN.getItems().setAll(dh.getFish());

@@ -2,15 +2,12 @@ package database;
 
 
 import entities.*;
-
-
 import exceptions.*;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 public class DatabaseHandlerImplementation implements DatabaseHandler {
     Connection conn;
@@ -74,6 +71,8 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             throw new OkragZbiornik();
         }
     }
+
+
 
     @Override
     public boolean chroniona(String ryba) {
@@ -291,6 +290,8 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         return arr;
     }
 
+
+
     private String miesiac(int id){
         switch (id){
             case 1:
@@ -497,7 +498,41 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         }
         return arr;
     }
+    @Override
+    public ArrayList<rankingREC> getRanking() {
+        String sql="select * from get_Ranking order by 3 desc";
 
+        ArrayList<rankingREC> arr = new ArrayList<>();
+        try {
+            ResultSet rs=getRS(sql);
+
+            while(rs.next()) {
+                arr.add(new rankingREC(rs.getString(1),rs.getString(2),rs.getFloat(3)));
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return arr;
+    }
+    @Override
+    public ArrayList<rankingREC> getFilteredRanking(Turniej turniej) {
+        String sql="select w.\"imie \", w.nazwisko, sum(p.waga*get_cena(p.ryba, p.data_polowu::date)::numeric::float8) as \"kasa\" from projektid.wędkarze w join projektid.polowy p on p.wędkarz=\n" +
+                "w.karta_rybacka group by w.karta_rybacka, p.id_turnieju having p.id_turnieju="+turniej.getId()+" order by 3";
+        System.out.println(sql);
+        ArrayList<rankingREC> arr = new ArrayList<>();
+        try {
+            ResultSet rs=getRS(sql);
+
+            while(rs.next()) {
+                arr.add(new rankingREC(rs.getString(1),rs.getString(2),rs.getFloat(3)));
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return arr;
+    }
     @Override
     public ArrayList<Turniej> getAktTurnieje() {
         String sql="select * from get_turnieje where data_turnieju=now()::date";
@@ -515,6 +550,31 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         }
         return arr;
     }
+
+    @Override
+    public ArrayList<Turniej> getFilterTurnieje(String miejsce, String date) {
+        String sql;
+        if(miejsce==null){
+            sql="select * from get_turnieje where data_turnieju>"+"'"+date+"'";
+        }else if(date==null || date.equals("")){
+            sql="select * from get_turnieje where nazwa="+"'"+miejsce+"'";
+        }else sql="select * from get_turnieje where data_turnieju>"+"'"+date+"'"+" and nazwa="+"'"+miejsce+"'";
+
+        System.out.println(sql);
+        ArrayList<Turniej> arr = new ArrayList<>();
+        try {
+            ResultSet rs=getRS(sql);
+
+            while(rs.next()) {
+                arr.add(new Turniej(rs.getInt(1), rs.getString(4), rs.getDate(2), rs.getString(3), rs.getString(5)));
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return arr;
+    }
+
     @Override
     public ArrayList<String> getOkregi() {
         ArrayList<String> arr=new ArrayList<>();

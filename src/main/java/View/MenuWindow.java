@@ -53,7 +53,15 @@ public class MenuWindow extends Stage {
     }
 
     @FXML
-    public void TurniejWejdz(MouseEvent event) {
+    public void TurniejWejdz(MouseEvent event) throws IOException {
+        turniejLoader = new FXMLLoader(getClass().getClassLoader().getResource("turniej.fxml"));
+        turniejPane = turniejLoader.load();
+        turniejcontroller=turniejLoader.getController();
+        turniejcontroller.setBase(dh);
+        turniejcontroller.setBoxes();
+
+        turniejStage=new Stage();
+        turniejStage.setScene(new Scene(turniejPane));
         turniejStage.show();
     }
 
@@ -128,7 +136,7 @@ public class MenuWindow extends Stage {
     Stage sekretarzStage;
 
     FXMLLoader turniejLoader = null;
-    // turniejController controller=null;
+    turniejController turniejcontroller=null;
     Pane turniejPane;
     Stage turniejStage;
 
@@ -137,12 +145,6 @@ public class MenuWindow extends Stage {
     }
     @FXML
     public void initialize() throws IOException {
-
-
-        turniejLoader = new FXMLLoader(getClass().getClassLoader().getResource("turniej.fxml"));
-        turniejPane = turniejLoader.load();
-        turniejStage=new Stage();
-        turniejStage.setScene(new Scene(turniejPane));
 
         wedkarzTab.setStyle("-fx-background-image: url(rybak_mc.png); -fx-cursor: hand");
         turniejTab.setStyle("-fx-background-image: url(turniej.png); -fx-cursor: hand");

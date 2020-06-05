@@ -3,6 +3,7 @@ package database;
 import entities.*;
 import exceptions.*;
 
+import javax.lang.model.type.ArrayType;
 import java.util.ArrayList;
 
 public interface DatabaseHandler {
@@ -15,7 +16,7 @@ public interface DatabaseHandler {
     boolean chroniona(String ryba);
     ArrayList<String> getZbiorniki();
     ArrayList<String> getZbiorniki(String okrag);
-
+    ArrayList<rankingREC> getRanking();
     ArrayList<String> getOkresy(String fish);
     ArrayList<String> getPlaces(String fish);
     Wedkarz getWedkarz(int id);
@@ -36,9 +37,12 @@ public interface DatabaseHandler {
     ArrayList<Polow> getPolowy(int id, Turniej turniej);
     ArrayList<Turniej> getTurnieje();
     ArrayList<Turniej> getAktTurnieje();
+    ArrayList<Turniej> getFilterTurnieje(String miejsce, String date);
     void addOkres(String fish,String text) throws ZlyOkres;
     void addPolow(Wedkarz wedk, Polow xd, Turniej turn) throws NoProperRod;
 
     void addZbiornik(Okreg okreg, String name, Float pow) throws OkragZbiornik;
     void updateZbiornik(Okreg okreg, String old, String neww) throws OkragZbiornik;
+
+    ArrayList<rankingREC> getFilteredRanking(Turniej turniej);
 }
