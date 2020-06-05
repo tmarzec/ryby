@@ -33,6 +33,17 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     }
 
     @Override
+    public void updateWedkarz(int karta, String imie, String nazwisko) {
+        String sql="update projektid.wędkarze set imie='"+imie+"',"+"nazwisko='"+nazwisko+"' where karta_rybacka="+karta;
+
+        try {
+            makeUpdate(sql);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void insertWedkarz(Wedkarz ne, int starosta) throws IdIstnieje, ZaMlody {
         String sql1="select exists(select * from projektid.wędkarze where karta_rybacka="+ne.getKarta()+")";
         try {
@@ -43,7 +54,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             throw new IdIstnieje();
         }
         sql1="insert into projektid.wędkarze values("+ne.getKarta()+",'"+ne.getImie()+"','"+ne.getNazwisko()+"','"+ne.getDataUrodzenia()+"',now()::date,"+starosta+")";
-        System.out.println(sql1);
+        //System.out.println(sql1);
         try {
             makeUpdate(sql1);
         } catch (Exception e) {
@@ -436,7 +447,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     public void addTurniej(String miejsce, String rodzaj) throws TurniejIstnieje {
         int id=getIdZbiornik(miejsce);
         String sql = "insert into projektid.turnieje(data_turnieju, rodzaj_konkurencji, miejsce) values(current_date,"+"'"+rodzaj+"'"+","+id+")";
-        System.out.println(sql);
+        //System.out.println(sql);
         try {
             makeUpdate(sql);
         }
@@ -530,7 +541,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     public ArrayList<rankingREC> getFilteredRanking(Turniej turniej) {
         String sql="select w.imie, w.nazwisko, sum(p.waga*get_cena(p.ryba, p.data_polowu::date)::numeric::float8) as \"kasa\" from projektid.wędkarze w join projektid.polowy p on p.wędkarz=\n" +
                 "w.karta_rybacka group by w.karta_rybacka, p.id_turnieju having p.id_turnieju="+turniej.getId()+" order by 3";
-        System.out.println(sql);
+        //System.out.println(sql);
         ArrayList<rankingREC> arr = new ArrayList<>();
         try {
             ResultSet rs=getRS(sql);
@@ -574,7 +585,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             sql="select * from get_turnieje where nazwa="+"'"+miejsce+"'";
         }else sql="select * from get_turnieje where data_turnieju>"+"'"+date+"'"+" and nazwa="+"'"+miejsce+"'";
 
-        System.out.println(sql);
+        //System.out.println(sql);
         ArrayList<Turniej> arr = new ArrayList<>();
         try {
             ResultSet rs=getRS(sql);

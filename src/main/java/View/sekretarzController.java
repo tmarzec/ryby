@@ -120,14 +120,27 @@ public class sekretarzController implements Initializable {
 
     //change wedk
     @FXML
-    void zmienWedk(ActionEvent event) {
+    void zmienWedk(ActionEvent event) throws IOException {
         if(wedkarze.getSelectionModel().isEmpty()) {
             warningBox.setText("zaznacz wędkarza!");
             warningBox.setVisible(true);
             return;
         }
+        Wedkarz a = wedkarze.getSelectionModel().getSelectedItem();
+        //open window where new name&naziwkso
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("ModifyWedkarz.fxml"));
+        Stage stage=new Stage();
+        stage.setScene(new Scene(loader.load()));
 
+        ModifyWedkarz wedk = loader.getController();
+        wedk.setDh(dh);
+        wedk.setA(a);
+        wedk.setParent(this);
+        wedk.setMe(stage);
 
+        wedk.doMagic();
+        stage.setResizable(false);
+        stage.show();
         warningBox.setVisible(false);
     }
 

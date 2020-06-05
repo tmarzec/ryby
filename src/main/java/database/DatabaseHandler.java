@@ -21,6 +21,7 @@ public interface DatabaseHandler {
     ArrayList<String> getPlaces(String fish);
     Wedkarz getWedkarz(int id);
     void insertWedkarz(Wedkarz ne, int starosta)throws IdIstnieje, ZaMlody;
+    void updateWedkarz(int karta, String imie, String nazwisko);
     boolean existsWedk(int wk);
     ArrayList<String> getRodzaje();
     ArrayList<String> getMaterialy();
