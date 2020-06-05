@@ -432,7 +432,18 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             throw new RodAlrThere();
         }
     }
-
+    @Override
+    public void addTurniej(String miejsce, String rodzaj) throws TurniejIstnieje {
+        int id=getIdZbiornik(miejsce);
+        String sql = "insert into projektid.turnieje(data_turnieju, rodzaj_konkurencji, miejsce) values(current_date,"+"'"+rodzaj+"'"+","+id+")";
+        System.out.println(sql);
+        try {
+            makeUpdate(sql);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public void addPrice(String fish, Float money) throws CenaDwaRazy {
         int id=getIdFish(fish);
@@ -517,7 +528,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     }
     @Override
     public ArrayList<rankingREC> getFilteredRanking(Turniej turniej) {
-        String sql="select w.\"imie \", w.nazwisko, sum(p.waga*get_cena(p.ryba, p.data_polowu::date)::numeric::float8) as \"kasa\" from projektid.wędkarze w join projektid.polowy p on p.wędkarz=\n" +
+        String sql="select w.imie, w.nazwisko, sum(p.waga*get_cena(p.ryba, p.data_polowu::date)::numeric::float8) as \"kasa\" from projektid.wędkarze w join projektid.polowy p on p.wędkarz=\n" +
                 "w.karta_rybacka group by w.karta_rybacka, p.id_turnieju having p.id_turnieju="+turniej.getId()+" order by 3";
         System.out.println(sql);
         ArrayList<rankingREC> arr = new ArrayList<>();
@@ -533,6 +544,9 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         }
         return arr;
     }
+
+
+
     @Override
     public ArrayList<Turniej> getAktTurnieje() {
         String sql="select * from get_turnieje where data_turnieju=now()::date";

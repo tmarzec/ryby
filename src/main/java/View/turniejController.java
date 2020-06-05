@@ -2,7 +2,9 @@ package View;
 
         import database.DatabaseHandler;
         import entities.Turniej;
+        import entities.TurniejIstnieje;
         import entities.rankingREC;
+        import exceptions.RodAlrThere;
         import javafx.beans.value.ChangeListener;
         import javafx.beans.value.ObservableValue;
         import javafx.collections.FXCollections;
@@ -25,6 +27,7 @@ package View;
         import java.net.URL;
         import java.time.format.DateTimeFormatter;
         import java.util.Date;
+        import java.util.Random;
         import java.util.ResourceBundle;
 
 public class turniejController implements Initializable {
@@ -47,9 +50,6 @@ public class turniejController implements Initializable {
     private DatePicker DataFiltr;
 
     @FXML
-    private ComboBox<?> MiejsceFiltr;
-
-    @FXML
     private TableView<rankingREC> RankingTable;
 
     @FXML
@@ -65,10 +65,10 @@ public class turniejController implements Initializable {
     private Button DodajButton;
 
     @FXML
-    private ComboBox<?> MiejsceBox;
+    private ComboBox<String> MiejsceBox;
 
     @FXML
-    private ComboBox<?> RodzajBox;
+    private ComboBox<String> RodzajBox;
 
     @FXML
     private DatePicker DataBox;
@@ -78,13 +78,36 @@ public class turniejController implements Initializable {
 
     @FXML
     private Text Cytaty;
-
+    @FXML
+    private Button nowyCytat;
     @FXML
     private Text Autor;
 
     @FXML
-    void DodajTurniej(ActionEvent event) {
+    void generateCytat(ActionEvent event) {
+        Random rand = new Random();
+        int id=1;
+        //int id =rand.nextInt(15);
+        switch (id){
+            case 1:
+                Cytaty.setText("„Nie ma ryby bez ości i człowieka bez wad.”");
+                Autor.setText("przysłowie norweskie");
+                break;
+        }
 
+    }
+    @FXML
+    void DodajTurniej(ActionEvent event) {
+        if(MiejsceBox.getValue()==null || RodzajBox.getValue()==null)
+            InofLab.setText("Najpierw wybierz miejsce i rodzaj!");
+        else{
+            try {
+                dh.addTurniej(MiejsceBox.getValue(), RodzajBox.getValue());
+            } catch (TurniejIstnieje e) {
+               InofLab.setText("Taki turniej już istnieje!");
+            }
+
+        }
     }
     public void refresh(){
         String miejsce=zbiorniki.getValue();
@@ -107,6 +130,8 @@ public class turniejController implements Initializable {
         TurniejeTable.getItems().setAll(dh.getTurnieje());
 
         RankingTable.getItems().setAll(dh.getRanking());
+        RodzajBox.getItems().setAll(dh.getRodzaje());
+        MiejsceBox.getItems().setAll(dh.getZbiorniki());
 
         zbiorniki.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override

@@ -45,4 +45,6 @@ public interface DatabaseHandler {
     void updateZbiornik(Okreg okreg, String old, String neww) throws OkragZbiornik;
 
     ArrayList<rankingREC> getFilteredRanking(Turniej turniej);
+
+    void addTurniej(String miejsce, String rodzaj) throws TurniejIstnieje;
 }
