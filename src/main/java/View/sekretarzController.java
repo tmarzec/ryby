@@ -109,8 +109,8 @@ public class sekretarzController implements Initializable {
 
         StarosciWindow obsz = loader.getController();
         obsz.setDb(dh);
+        obsz.setBoxes();
         obsz.setMe(stage);
-        obsz.doMagic();
         stage.setResizable(false);
         stage.show();
     }

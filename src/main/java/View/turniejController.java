@@ -82,12 +82,15 @@ public class turniejController implements Initializable {
     private Button nowyCytat;
     @FXML
     private Text Autor;
-
+    private int oldId=1;
     @FXML
     void generateCytat(ActionEvent event) {
         Random rand = new Random();
-        int id;
-        id =rand.nextInt(9);
+        int id=1;
+        while(id==oldId){
+            id =rand.nextInt(9);
+        }
+       oldId=id;
         switch (id){
             case 1:
                 Cytaty.setText("„Nie ma ryby bez ości i człowieka bez wad.”");

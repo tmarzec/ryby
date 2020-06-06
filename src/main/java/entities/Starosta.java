@@ -5,12 +5,26 @@ public class Starosta {
     String miasto;
     String imie;
     String nazwisko;
-
+    Boolean status;
     public Starosta(Integer id,String imie, String nazwisko, String miasto) {
         this.id=id;
         this.miasto = miasto;
         this.imie = imie;
         this.nazwisko = nazwisko;
+    }
+    public Starosta(Starosta obj) {
+        this.id=obj.id;
+        this.miasto = obj.miasto;
+        this.imie = obj.imie;
+        this.nazwisko = obj.nazwisko;
+        this.status=obj.status;
+    }
+    public Starosta(Integer id,String imie, String nazwisko, String miasto, Boolean status) {
+        this.id=id;
+        this.miasto = miasto;
+        this.imie = imie;
+        this.nazwisko = nazwisko;
+        this.status=status;
     }
 
     @Override
@@ -38,6 +52,9 @@ public class Starosta {
 
     public String getNazwisko() {
         return nazwisko;
+    }
+    public Boolean getStatus() {
+        return status;
     }
 
     public void setNazwisko(String nazwisko) {

@@ -1,18 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.StarosciWindow">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.StarosciWindow">
    <children>
-      <TableView layoutX="8.0" layoutY="7.0" prefHeight="202.0" prefWidth="290.0">
+      <TableView fx:id="StarosciTable" prefHeight="200.0" prefWidth="399.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-            <TableColumn prefWidth="75.0" text="Column X" />
+          <TableColumn fx:id="ImieCol" prefWidth="75.0" text="Imie" />
+          <TableColumn fx:id="NazwiskoCol" prefWidth="83.0" text="Nazwisko" />
+            <TableColumn fx:id="MiastoCol" prefWidth="168.0" text="Miasto" />
+            <TableColumn fx:id="StatusCol" prefWidth="72.0" text="Status" />
         </columns>
       </TableView>
+      <GridPane layoutY="200.0" prefHeight="35.0" prefWidth="399.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="211.0" minWidth="10.0" prefWidth="211.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="127.0" minWidth="10.0" prefWidth="55.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" text="Button" />
+            <Button fx:id="DodajButton" mnemonicParsing="false" onAction="#DodajStaroste" prefHeight="88.0" prefWidth="200.0" text="Dodaj" />
+            <Button fx:id="AktywujButton" mnemonicParsing="false" onAction="#AktywujStaroste" prefHeight="72.0" prefWidth="133.0" text="Aktywuj" GridPane.columnIndex="2" />
+            <Button fx:id="ZakonczButton" mnemonicParsing="false" onAction="#ZakonczKadencje" prefHeight="52.0" prefWidth="238.0" text="Zakończ kadencję" GridPane.columnIndex="1" />
+         </children>
+      </GridPane>
+      <TextField fx:id="InfoLab" layoutY="373.0" prefHeight="26.0" prefWidth="400.0" />
+      <GridPane layoutY="269.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="10.0" prefWidth="99.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="101.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TextField fx:id="imieField" />
+            <TextField fx:id="NazwiskoField" GridPane.columnIndex="1" />
+            <TextField fx:id="MiastoField" GridPane.columnIndex="2" />
+            <TextField fx:id="AktywnyField" GridPane.columnIndex="3" />
+         </children>
+      </GridPane>
+      <Text layoutX="36.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Imie" wrappingWidth="42.107421875" />
+      <Text layoutX="118.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nazwisko" />
+      <Text layoutX="225.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Miasto" />
+      <Text layoutX="320.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aktywny" />
+      <Text layoutX="323.0" layoutY="323.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tak/Nie" />
    </children>
-</AnchorPane>
+</Pane>

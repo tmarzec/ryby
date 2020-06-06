@@ -28,7 +28,7 @@ public interface DatabaseHandler {
     ArrayList<String> getOkregi();
 
     String getOkreg(String zbiornik);
-
+    ArrayList<Starosta> getStarosci();
     void addWedka(int wedkarz, Wedka wedka) throws RodAlrThere;
     void addPrice(String fish,Float money) throws CenaDwaRazy;
     void addWystepowanie(String fish, String zbiornik) throws ParaRybaZbiornikJest;
@@ -48,4 +48,9 @@ public interface DatabaseHandler {
     ArrayList<rankingREC> getFilteredRanking(Turniej turniej);
 
     void addTurniej(String miejsce, String rodzaj) throws TurniejIstnieje;
+
+    void updateStarosta(Integer id, boolean coRobic);
+
+    void addStarosta(String text, String text1, String text2, String text3) throws StarostaError;
+
 }

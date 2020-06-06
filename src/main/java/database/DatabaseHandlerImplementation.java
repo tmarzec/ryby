@@ -42,6 +42,20 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             e.printStackTrace();
         }
     }
+    @Override
+    public void updateStarosta(Integer id, boolean coRobic) {
+        String sql=null;
+        if(coRobic)
+        sql="update projektid.starości set aktualny=true where id_starosty="+id;
+        else  sql="update projektid.starości set aktualny=false where id_starosty="+id;
+        try {
+            makeUpdate(sql);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     @Override
     public void insertWedkarz(Wedkarz ne, int starosta) throws IdIstnieje, ZaMlody {
@@ -72,7 +86,26 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             throw new OkragZbiornik();
         }
     }
+    @Override
+    public void addStarosta(String imie, String nazwisko, String miasto, String text3) throws StarostaError {
+        String sql=null;
 
+        if(text3.toLowerCase().equals("tak"))
+            sql = "insert into projektid.starości(imie, nazwisko, miasto, aktualny) values" +
+                "('"+imie+"','"+nazwisko+"','"+miasto+"',"+"'true'"+")";
+        else if(text3.toLowerCase().equals("nie"))
+            sql = "insert into projektid.starości(imie, nazwisko, miasto, aktualny) values" +
+                    "('"+imie+"','"+nazwisko+"','"+miasto+"',"+"'false'"+")";
+
+        System.out.println(sql);
+        if(sql!=null){
+            try {
+                makeUpdate(sql);
+            } catch (Exception e) {
+                throw new StarostaError();
+            }
+        }
+    }
     @Override
     public void updateZbiornik(Okreg okreg, String old, String neww) throws OkragZbiornik {
         String sql = "update projektid.zbiorniki_wodne set nazwa='"+neww+"' where nazwa='"+old+"' and okręg='"+okreg.toString()+"'";
@@ -146,7 +179,21 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
         }
         return arr;
     }
-
+    @Override
+    public ArrayList<Starosta> getStarosci() {
+        ArrayList<Starosta> arr = new ArrayList<>();
+        String sql = "select * from projektid.starości order by aktualny desc" ;
+        System.out.println(sql);
+        try {
+            ResultSet rs = getRS(sql);
+            while(rs.next()) {
+                arr.add(new Starosta(rs.getInt(1), rs.getString("imie"), rs.getString("nazwisko"), rs.getString("miasto"), rs.getBoolean("aktualny")));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return arr;
+    }
     @Override
     public Integer getIdZbiornik(String miejsce) {
         String sql = "select * from projektid.zbiorniki_wodne zw where zw.nazwa='"+miejsce+"'";
@@ -455,6 +502,9 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             throw new TurniejIstnieje();
         }
     }
+
+
+
     @Override
     public void addPrice(String fish, Float money) throws CenaDwaRazy {
         int id=getIdFish(fish);
