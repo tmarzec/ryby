@@ -24,6 +24,7 @@ import tools.CustomBox;
 
 import java.net.URL;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -114,7 +115,9 @@ public class wedkarzController implements Initializable {
         for(Polow kk: polows) {
             a+=kk.getPunkty();
         }
-        sumBT.setText(a.toString());
+        DecimalFormat aa = new DecimalFormat();
+        aa.setMaximumFractionDigits(2);
+        sumBT.setText(aa.format(a));
         polowy.getItems().setAll(polows);
 
         //String okr = okregIN.getSelectionModel().getSelectedItem();
