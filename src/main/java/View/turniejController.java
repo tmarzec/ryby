@@ -1,51 +1,42 @@
 package View;
 
-        import database.DatabaseHandler;
-        import entities.Turniej;
-        import entities.TurniejIstnieje;
-        import entities.rankingREC;
-        import exceptions.RodAlrThere;
-        import javafx.beans.value.ChangeListener;
-        import javafx.beans.value.ObservableValue;
-        import javafx.collections.FXCollections;
-        import javafx.event.ActionEvent;
-        import javafx.fxml.FXML;
-        import javafx.fxml.Initializable;
-        import javafx.scene.control.Button;
-        import javafx.scene.control.ComboBox;
-        import javafx.scene.control.DatePicker;
-        import javafx.scene.control.TableColumn;
-        import javafx.scene.control.TableView;
-        import javafx.scene.control.TextField;
-        import javafx.scene.control.cell.PropertyValueFactory;
-        import javafx.scene.input.MouseButton;
-        import javafx.scene.input.MouseEvent;
-        import javafx.scene.layout.Pane;
-        import javafx.scene.text.Text;
-        import tools.CustomBox;
+import database.DatabaseHandler;
+import entities.Turniej;
+import entities.TurniejIstnieje;
+import entities.rankingREC;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 
-        import java.net.URL;
-        import java.time.format.DateTimeFormatter;
-        import java.util.Date;
-        import java.util.Random;
-        import java.util.ResourceBundle;
+import java.net.URL;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Random;
+import java.util.ResourceBundle;
 
 public class turniejController implements Initializable {
     DatabaseHandler dh;
     public void setBase(DatabaseHandler db) {
         this.dh=db;
     }
-    private CustomBox zbiorniki;
+    @FXML
+    private ComboBox<String> zbiorniki;
     @FXML
     private TableView<Turniej> TurniejeTable;
-    @FXML
-    private Pane PaneForCustom;
     @FXML
     private TableColumn<Turniej, String> MiejsceCol;
 
     @FXML
     private TableColumn<Turniej, Date> DataCol;
-
+    @FXML
+    private TableColumn<Turniej, String>RodzCol;
     @FXML
     private DatePicker DataFiltr;
 
@@ -159,8 +150,8 @@ public class turniejController implements Initializable {
         refresh();
     }
     public void setBoxes() {
-        zbiorniki = new CustomBox(FXCollections.observableArrayList(dh.getZbiorniki()));
-        PaneForCustom.getChildren().add(zbiorniki);
+        zbiorniki.getItems().setAll(dh.getZbiorniki());
+        zbiorniki.getItems().add("Wszystkie");
         zbiorniki.setPromptText("Wszystkie");
         TurniejeTable.getItems().setAll(dh.getTurnieje(null));
 
@@ -188,7 +179,7 @@ public class turniejController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         MiejsceCol.setCellValueFactory(new PropertyValueFactory<>("miejsce"));
         DataCol.setCellValueFactory(new PropertyValueFactory<>("data"));
-
+        RodzCol.setCellValueFactory(new PropertyValueFactory<>("rodzaj"));
         ImieCol.setCellValueFactory(new PropertyValueFactory<>("imie"));
         NazwiskoCol.setCellValueFactory(new PropertyValueFactory<>("nazwisko"));
         SumaPolowCol.setCellValueFactory(new PropertyValueFactory<>("punkty"));

@@ -16,6 +16,9 @@ public class Turniej {
     public String getMiejsce() {
         return miejsce;
     }
+    public String getRodzaj() {
+        return rodzaj;
+    }
 
     public Date getData() {
         return data;

@@ -636,7 +636,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     @Override
     public ArrayList<Turniej> getFilterTurnieje(String miejsce, String date) {
         String sql;
-        if(miejsce==null && date==null)
+        if((miejsce==null && date==null) || miejsce.equals("Wszystkie"))
             sql="select * from projektid.get_turnieje";
         else if(miejsce==null){
             sql="select * from projektid.get_turnieje where data_turnieju>"+"'"+date+"'";

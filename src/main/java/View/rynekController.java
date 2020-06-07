@@ -12,7 +12,6 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -42,7 +41,8 @@ public class rynekController implements Initializable {
     private Text price;
     @FXML
     private TextField poleCena;
-    private CustomBox wystepowanie;
+    @FXML
+    private ComboBox<String> wystepowanie;
     @FXML
     private TableView<String> places;
     @FXML
@@ -144,11 +144,7 @@ public class rynekController implements Initializable {
         pane.getChildren().add(new ImageView(logo));
     }
     public void setChoiceBox() {
-       // WystepowanieBox.setItems(FXCollections.observableArrayList(dh.getOkregi()));
-        wystepowanie=new CustomBox(FXCollections.observableArrayList(dh.getOkregi()));
-        wystepowanie.getItems();
-        Grid.add(wystepowanie,1,0);
-
+        wystepowanie.getItems().setAll(dh.getOkregi());
         wystepowanie.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
