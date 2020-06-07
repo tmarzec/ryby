@@ -1,10 +1,7 @@
 package View;
 
 import database.DatabaseHandler;
-import entities.Polow;
-import entities.Turniej;
-import entities.Wedka;
-import entities.Wedkarz;
+import entities.*;
 import exceptions.NoProperRod;
 import exceptions.RodAlrThere;
 import javafx.beans.value.ChangeListener;
@@ -20,7 +17,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-import tools.CustomBox;
 
 import java.net.URL;
 import java.sql.Timestamp;
@@ -131,7 +127,7 @@ public class wedkarzController implements Initializable {
 
 
     }
-    CustomBox okregBox;
+    ComboBox<String> okregBox;
     @FXML
     private Text warningText;
 
@@ -182,8 +178,8 @@ public class wedkarzController implements Initializable {
         });
         zbiornikIN.getItems().setAll(dh.getZbiorniki());
 
-        okregBox = new CustomBox(FXCollections.observableList(dh.getOkregi()));
-
+        //okregBox = new CustomBox(FXCollections.observableList(dh.getOkregi()));
+        okregBox=new ComboBox<>(FXCollections.observableList(dh.getOkregi()));
         //when pzw changed
         okregBox.getSelectionModel().selectedIndexProperty().addListener((observableValue, number, t1) -> {
             zbiornikIN.getItems().setAll(dh.getZbiorniki(okregBox.getSelectionModel().getSelectedItem()));
