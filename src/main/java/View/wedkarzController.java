@@ -89,27 +89,16 @@ public class wedkarzController implements Initializable {
     @FXML
     private TableColumn<Polow, Float> pktCL;
 
+    //top right
     @FXML
     private ComboBox<Turniej> turniejBT;
 
     public void setID(int id) {
         wedkarz=id;
     }
-    public void refresh() {
-        ArrayList<Wedka> arr = dh.getWedki(wedkarz);
 
-        wedki.getItems().setAll(arr);
-        materialyCB.getItems().setAll(dh.getMaterialy());
-        rodzajeCB.getItems().setAll(dh.getRodzaje());
-
-        ArrayList<Turniej> all = dh.getTurnieje(our);
-        all.add(0, new Turniej());
-        turniejs=all;
-        turniejBT.getItems().setAll(all);
-        if(turniejBT.getSelectionModel().isEmpty())
-        turniejBT.getSelectionModel().select(0);
-
-        //fill polowy
+    public void refreshPolows() {
+        if(turniejBT.getSelectionModel().isEmpty()) return;
         ArrayList<Polow> polows = dh.getPolowy(wedkarz, turniejBT.getSelectionModel().getSelectedItem());
         Float a = 0.f;
         for(Polow kk: polows) {
@@ -119,6 +108,23 @@ public class wedkarzController implements Initializable {
         aa.setMaximumFractionDigits(2);
         sumBT.setText(aa.format(a));
         polowy.getItems().setAll(polows);
+    }
+    public void refresh() {
+
+        ArrayList<Wedka> arr = dh.getWedki(wedkarz);
+        wedki.getItems().setAll(arr);
+
+
+        ArrayList<Turniej> all = dh.getTurnieje(our);
+        all.add(0, new Turniej());
+        turniejs=all;
+        turniejBT.getItems().setAll(all);
+
+        if(turniejBT.getSelectionModel().isEmpty())
+        turniejBT.getSelectionModel().select(0);
+
+        //fill polowy
+
 
         //String okr = okregIN.getSelectionModel().getSelectedItem();
         //zbiornikIN.getItems().setAll(dh.getZbiorniki(okr));
@@ -131,6 +137,10 @@ public class wedkarzController implements Initializable {
 
     ArrayList<Turniej> turniejs;
     public void magic() {
+
+        materialyCB.getItems().setAll(dh.getMaterialy());
+        rodzajeCB.getItems().setAll(dh.getRodzaje());
+
         ekwExc.setVisible(false);
         our = dh.getWedkarz(wedkarz);
         basicInfo.setText("Witaj " + our.getImie() + " " + our.getNazwisko()+"!");
@@ -291,7 +301,7 @@ public class wedkarzController implements Initializable {
         turniejBT.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                refresh();
+                refreshPolows();
             }
         });
         rybaIN.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
