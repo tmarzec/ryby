@@ -454,9 +454,8 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             ResultSet rs=getRS(sql);
 
             rs.next();
-            boolean res = rs.getBoolean(1);
             //System.out.println(res);
-            return res;
+            return rs.getBoolean(1);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -554,8 +553,11 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     }
 
     @Override
-    public ArrayList<Turniej> getTurnieje() {
-        String sql="select * from get_turnieje order by 2 desc";
+    public ArrayList<Turniej> getTurnieje(Wedkarz he) {
+        String sql = "select * from projektid.get_turnieje order by 2 desc";
+        if(he != null)
+        sql ="select * from projektid.get_turnieje g where exists(select * from projektid.polowy p where p.wędkarz="+he.getKarta()+" and p.id_turnieju=g.id_turnieju)" +
+                 " order by 2 desc";
 
         ArrayList<Turniej> arr = new ArrayList<>();
         try {

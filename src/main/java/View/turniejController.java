@@ -162,7 +162,7 @@ public class turniejController implements Initializable {
         zbiorniki = new CustomBox(FXCollections.observableArrayList(dh.getZbiorniki()));
         PaneForCustom.getChildren().add(zbiorniki);
         zbiorniki.setPromptText("Wszystkie");
-        TurniejeTable.getItems().setAll(dh.getTurnieje());
+        TurniejeTable.getItems().setAll(dh.getTurnieje(null));
 
         RankingTable.getItems().setAll(dh.getRanking());
         RodzajBox.getItems().setAll(dh.getRodzaje());

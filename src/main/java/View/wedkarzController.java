@@ -100,6 +100,14 @@ public class wedkarzController implements Initializable {
         wedki.getItems().setAll(arr);
         materialyCB.getItems().setAll(dh.getMaterialy());
         rodzajeCB.getItems().setAll(dh.getRodzaje());
+
+        ArrayList<Turniej> all = dh.getTurnieje(our);
+        all.add(0, new Turniej());
+        turniejs=all;
+        turniejBT.getItems().setAll(all);
+        if(turniejBT.getSelectionModel().isEmpty())
+        turniejBT.getSelectionModel().select(0);
+
         //fill polowy
         ArrayList<Polow> polows = dh.getPolowy(wedkarz, turniejBT.getSelectionModel().getSelectedItem());
         Float a = 0.f;
@@ -112,6 +120,7 @@ public class wedkarzController implements Initializable {
         //String okr = okregIN.getSelectionModel().getSelectedItem();
         //zbiornikIN.getItems().setAll(dh.getZbiorniki(okr));
 
+
     }
     CustomBox okregBox;
     @FXML
@@ -122,14 +131,6 @@ public class wedkarzController implements Initializable {
         ekwExc.setVisible(false);
         our = dh.getWedkarz(wedkarz);
         basicInfo.setText("Witaj " + our.getImie() + " " + our.getNazwisko()+"!");
-
-
-        ArrayList<Turniej> all = dh.getTurnieje();
-        all.add(0, new Turniej());
-        turniejs=all;
-
-        turniejBT.getItems().setAll(all);
-        turniejBT.getSelectionModel().select(0);
 
 
 

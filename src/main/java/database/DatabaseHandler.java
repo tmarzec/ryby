@@ -36,7 +36,8 @@ public interface DatabaseHandler {
     Integer getIdFish(String fish);
     Integer getIdZbiornik(String miejsce);
     ArrayList<Polow> getPolowy(int id, Turniej turniej);
-    ArrayList<Turniej> getTurnieje();
+
+    ArrayList<Turniej> getTurnieje(Wedkarz he);
     ArrayList<Turniej> getAktTurnieje();
     ArrayList<Turniej> getFilterTurnieje(String miejsce, String date);
     void addOkres(String fish,String text) throws ZlyOkres;
