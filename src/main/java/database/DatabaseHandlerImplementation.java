@@ -4,6 +4,7 @@ package database;
 import entities.*;
 import exceptions.*;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,7 +32,11 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             e.printStackTrace();
         }
     }
-
+    public static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
     @Override
     public void updateWedkarz(int karta, String imie, String nazwisko) {
         String sql="update projektid.wędkarze set imie='"+imie+"',"+"nazwisko='"+nazwisko+"' where karta_rybacka="+karta;
@@ -574,14 +579,14 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     }
     @Override
     public ArrayList<rankingREC> getRanking() {
-        String sql="select * from get_Ranking order by 3 desc";
+        String sql="select * from projektid.get_ranking order by 3 desc";
 
         ArrayList<rankingREC> arr = new ArrayList<>();
         try {
             ResultSet rs=getRS(sql);
 
             while(rs.next()) {
-                arr.add(new rankingREC(rs.getString(1),rs.getString(2),rs.getFloat(3)));
+                arr.add(new rankingREC(rs.getString(1),rs.getString(2),round(rs.getFloat(3),2)));
             }
         }
         catch (Exception e) {
@@ -592,14 +597,14 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     @Override
     public ArrayList<rankingREC> getFilteredRanking(Turniej turniej) {
         String sql="select w.imie, w.nazwisko, sum(p.waga*get_cena(p.ryba, p.data_polowu::date)::numeric::float8) as \"kasa\" from projektid.wędkarze w join projektid.polowy p on p.wędkarz=\n" +
-                "w.karta_rybacka group by w.karta_rybacka, p.id_turnieju having p.id_turnieju="+turniej.getId()+" order by 3";
+                "w.karta_rybacka group by w.karta_rybacka, p.id_turnieju having p.id_turnieju="+turniej.getId()+" order by 3 desc";
         //System.out.println(sql);
         ArrayList<rankingREC> arr = new ArrayList<>();
         try {
             ResultSet rs=getRS(sql);
 
             while(rs.next()) {
-                arr.add(new rankingREC(rs.getString(1),rs.getString(2),rs.getFloat(3)));
+                arr.add(new rankingREC(rs.getString(1),rs.getString(2),round(rs.getFloat(3),2)));
             }
         }
         catch (Exception e) {

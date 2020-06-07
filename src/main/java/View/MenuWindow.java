@@ -149,7 +149,7 @@ public class MenuWindow extends Stage {
         wedkarzTab.setStyle("-fx-background-image: url(rybak_mc.png); -fx-cursor: hand");
         turniejTab.setStyle("-fx-background-image: url(turniej.png); -fx-cursor: hand");
         RynekTab.setStyle("-fx-background-image: url(ryby.png); -fx-cursor: hand");
-        sekretarzTab.setStyle("-fx-background-image: url(sekretarz.png); -fx-cursor: hand");
+        sekretarzTab.setStyle("-fx-background-image: url(man.png); -fx-cursor: hand");
     }
 }
 
