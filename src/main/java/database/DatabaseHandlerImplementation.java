@@ -596,7 +596,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     }
     @Override
     public ArrayList<rankingREC> getFilteredRanking(Turniej turniej) {
-        String sql="select w.imie, w.nazwisko, sum(p.waga*get_cena(p.ryba, p.data_polowu::date)::numeric::float8) as \"kasa\" from projektid.wędkarze w join projektid.polowy p on p.wędkarz=\n" +
+        String sql="select w.imie, w.nazwisko, sum(p.waga*projektid.get_cena(p.ryba, p.data_polowu::date)::numeric::float8) as \"kasa\" from projektid.wędkarze w join projektid.polowy p on p.wędkarz=\n" +
                 "w.karta_rybacka group by w.karta_rybacka, p.id_turnieju having p.id_turnieju="+turniej.getId()+" order by 3 desc";
         //System.out.println(sql);
         ArrayList<rankingREC> arr = new ArrayList<>();
