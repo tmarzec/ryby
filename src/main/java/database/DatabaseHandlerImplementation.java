@@ -617,7 +617,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
 
     @Override
     public ArrayList<Turniej> getAktTurnieje() {
-        String sql="select * from get_turnieje where data_turnieju=now()::date";
+        String sql="select * from projektid.get_turnieje where data_turnieju=now()::date";
 
         ArrayList<Turniej> arr = new ArrayList<>();
         try {
@@ -637,12 +637,12 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     public ArrayList<Turniej> getFilterTurnieje(String miejsce, String date) {
         String sql;
         if(miejsce==null && date==null)
-            sql="select * from get_turnieje";
+            sql="select * from projektid.get_turnieje";
         else if(miejsce==null){
-            sql="select * from get_turnieje where data_turnieju>"+"'"+date+"'";
+            sql="select * from projektid.get_turnieje where data_turnieju>"+"'"+date+"'";
         }else if(date==null || date.equals("")){
-            sql="select * from get_turnieje where nazwa="+"'"+miejsce+"'";
-        } else sql="select * from get_turnieje where data_turnieju>"+"'"+date+"'"+" and nazwa="+"'"+miejsce+"'";
+            sql="select * from projektid.get_turnieje where nazwa="+"'"+miejsce+"'";
+        } else sql="select * from projektid.get_turnieje where data_turnieju>"+"'"+date+"'"+" and nazwa="+"'"+miejsce+"'";
 
         //System.out.println(sql);
         ArrayList<Turniej> arr = new ArrayList<>();
