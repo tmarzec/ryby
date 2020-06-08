@@ -13,24 +13,32 @@ import java.util.Properties;
 public class DatabaseHandlerImplementation implements DatabaseHandler {
     Connection conn;
     Properties pro = new Properties();
+    String ip, port, nazwaBazy;
     @Override
-    public void connect() {
+    public void connect(String ip, String port, String nazwaBazy, String user, String password) {
         try {
+            this.ip=ip;
+            this.port=port;
+            this.nazwaBazy=nazwaBazy;
             Class.forName("org.postgresql.Driver");
-            System.out.println("conn");
-            DriverManager.setLoginTimeout(1<<31);
-            pro.put("user", "postgres");
-            pro.put("password", "morszczukgora");
-            //pro.put("password", "123456789");
+            //System.out.println("conn");
+            pro.put("user", user);
+            //pro.put("user", "postgres");
+            //pro.put("password", "morszczukgora");
+            pro.put("password", password);
             pro.put("autoReconnect", "true");
-            conn=DriverManager.getConnection("jdbc:postgresql://40.85.112.201:5432/database", pro);
+            conn=DriverManager.getConnection("jdbc:postgresql://"+ip+":"+port+"/"+nazwaBazy, pro);
             //conn=DriverManager.getConnection("jdbc:postgresql://13.79.145.88:5432/ryby", pro);
 
-            System.out.println("successfully connected");
+            //System.out.println("successfully connected");
         }
         catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Failed to connect, closing");
+            System.exit(0);
         }
+    }
+    private void con() {
+        connect(ip, port, nazwaBazy, (String)pro.get("user"), (String)pro.get("password"));
     }
     public static float round(float d, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(d));
@@ -102,7 +110,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             sql = "insert into projektid.starości(imie, nazwisko, miasto, aktualny) values" +
                     "('"+imie+"','"+nazwisko+"','"+miasto+"',"+"'false'"+")";
 
-        System.out.println(sql);
+        //System.out.println(sql);
         if(sql!=null){
             try {
                 makeUpdate(sql);
@@ -188,7 +196,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
     public ArrayList<Starosta> getStarosci() {
         ArrayList<Starosta> arr = new ArrayList<>();
         String sql = "select * from projektid.starości order by aktualny desc" ;
-        System.out.println(sql);
+        //System.out.println(sql);
         try {
             ResultSet rs = getRS(sql);
             while(rs.next()) {
@@ -220,7 +228,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             st.executeUpdate(sql);
         } catch (Exception throwables) {
             conn.close();
-            connect();
+            con();
             st=conn.createStatement();
             st.executeUpdate(sql);
         }
@@ -234,7 +242,7 @@ public class DatabaseHandlerImplementation implements DatabaseHandler {
             rs=st.executeQuery(sql);
         } catch (Exception throwables) {
             conn.close();
-            connect();
+            con();
             st=conn.createStatement();
             rs=st.executeQuery(sql);
         }

@@ -7,7 +7,7 @@ import javax.lang.model.type.ArrayType;
 import java.util.ArrayList;
 
 public interface DatabaseHandler {
-    void connect();
+    void connect(String ip, String port, String nazwaBazy, String user, String password);
     ArrayList<Starosta> getStarosciAkt();
     ArrayList<String> getFish();
     ArrayList<String> getFish(String miejsce);

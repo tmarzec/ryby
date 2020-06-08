@@ -18,9 +18,9 @@ public class StartMenu extends Application {
 
     public void start(Stage stage) throws Exception {
 
-
+        //jdbc:postgresql://40.85.112.201:5432/database
         DatabaseHandler db = new DatabaseHandlerImplementation();
-        db.connect();
+        db.connect("40.85.112.201", "5432", "database", "postgres", "morszczukgora");
 
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("test.fxml"));
         Pane root = loader.load();
